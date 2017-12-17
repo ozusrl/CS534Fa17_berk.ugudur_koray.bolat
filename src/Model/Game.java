@@ -6,17 +6,17 @@ import java.util.Collections;
 public class Game {
     private Board board;
     private int numOfPlayers;
-    private int numOfCards;
+    private int numOfEachSymbolOnDeck;
     private int numOfPirates;
     private ArrayList<Player> players;
     private ArrayList<Card> deck;
 
-    public Game(Board board, int numOfPlayers, int numOfCards, int numOfPirates) {
+    public Game(Board board, int numOfPlayers, int numOfEachSymbolOnDeck, int numOfPirates) {
         this.board = board;
         this.numOfPlayers = numOfPlayers;
-        this.numOfCards = numOfCards;
+        this.numOfEachSymbolOnDeck = numOfEachSymbolOnDeck;
         this.players = new ArrayList<>(numOfPlayers);
-        this.deck = new ArrayList<>(numOfCards);
+        this.deck = new ArrayList<>();
         this.numOfPirates = numOfPirates;
         setup();
     }
@@ -33,10 +33,9 @@ public class Game {
 
     private void setupDeck() {
         Symbol[] symbols = Symbol.values();
-        for (int i = 0; i < numOfCards; i++)
-            for (int j = 0; j < 30; j++)
+        for (int i = 0; i < symbols.length; i++)
+            for (int j = 0; j < numOfEachSymbolOnDeck; j++)
                 deck.add(new Card(symbols[i]));
-        Collections.shuffle(deck);
     }
 
 }
