@@ -10,7 +10,7 @@ public class Board {
     public Board(int numOfCells, int numOfSegments) {
         this.numOfCells = numOfCells;
         this.numOfSegments = numOfSegments;
-        this.segments = new ArrayList<>();
+        this.segments = new ArrayList<>(numOfSegments);
         createSegments();
     }
 

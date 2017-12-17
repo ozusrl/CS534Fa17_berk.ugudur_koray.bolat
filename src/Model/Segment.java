@@ -9,7 +9,7 @@ public class Segment {
 
     public Segment(int numOfCells) {
         this.numOfCells = numOfCells;
-        this.cells = new ArrayList<>();
+        this.cells = new ArrayList<>(numOfCells);
         createCells();
         shuffleCells();
     }
