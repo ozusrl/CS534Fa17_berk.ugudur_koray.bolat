@@ -24,6 +24,15 @@ public class Game {
     private void setup() {
         setupPlayers();
         setupDeck();
+        addPirates();
+    }
+
+    private void addPirates() {
+        for(int i=0; i<players.size();i++){
+            for(int j=0; j<numOfPirates; j++){
+                //players.get(i).addPirate(new Pirate());
+            }
+        }
     }
 
     private void setupPlayers() {

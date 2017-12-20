@@ -4,6 +4,9 @@ package Model;
  * Created by berku on 17.12.2017.
  */
 public class Pirate {
-    public Pirate() {
+
+private Cell currentCell;
+    public Pirate(Cell currentCell){
+        this.currentCell = currentCell;
     }
 }
