@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Board {
     private int numOfCells;
     private int numOfSegments;
+
     private ArrayList<Segment> segments;
 
     public Board(int numOfCells, int numOfSegments) {
@@ -25,6 +26,10 @@ public class Board {
 
     public int getNumOfCells() {
         return numOfCells;
+    }
+
+    public ArrayList<Segment> getSegments() {
+        return segments;
     }
 
     @Override

@@ -28,6 +28,10 @@ public class Segment {
         return numOfCells;
     }
 
+    public ArrayList<Cell> getCells() {
+        return cells;
+    }
+
     @Override
     public String toString() {
         return "Segment{" +

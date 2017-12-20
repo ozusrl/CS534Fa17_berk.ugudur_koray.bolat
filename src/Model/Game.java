@@ -47,4 +47,7 @@ public class Game {
                 deck.add(new Card(symbols[i]));
     }
 
+    public Board getBoard() {
+        return board;
+    }
 }
