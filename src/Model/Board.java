@@ -13,11 +13,16 @@ public class Board {
         this.numOfSegments = numOfSegments;
         this.segments = new ArrayList<>(numOfSegments);
         createSegments();
+        for(Segment s: segments){
+            for(Cell c: s.getCells()){
+                System.out.println(c.toString());
+            }
+        }
     }
 
     private void createSegments() {
         for(int i = 0; i < numOfSegments; i++)
-            segments.add(new Segment(numOfCells));
+            segments.add(new Segment(i, numOfCells));
     }
 
     public int getNumOfSegments() {
