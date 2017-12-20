@@ -14,7 +14,7 @@ public class Segment {
         this.index = index;
         createCells();
         shuffleCells();
-        setIndexes();
+        setupCells();
     }
 
     private void createCells() {
@@ -27,9 +27,31 @@ public class Segment {
         Collections.shuffle(cells);
     }
 
-    private void setIndexes() {
-        for (int i = 0; i < numOfCells; i++)
-            cells.get(i).setIndex((index * numOfCells) + i);
+    private void setupCells() {
+        for (int i = 0; i < numOfCells; i++) {
+            Cell cell = cells.get(i);
+            cell.setIndex((index * numOfCells) + i);
+            int tempCellIndex = cell.getIndex() + (numOfCells / 2);
+            cell.setX(calculateXPositionOfCell(tempCellIndex));
+            cell.setY(calculateYPositionOfCell(tempCellIndex));
+        }
+    }
+
+    private int calculateXPositionOfCell(int tempCellIndex){
+        //TODO: Magic number
+        int x = (tempCellIndex / numOfCells) * 48 * 2;
+        return x;
+    }
+
+    private int calculateYPositionOfCell(int tempCellIndex) {
+        //TODO: Magic number
+        int remaining = (tempCellIndex / numOfCells) % 2;
+        int y;
+        if (remaining == 0)
+            y = (tempCellIndex % numOfCells) * 48 * 2;
+        else
+            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * 48 * 2;
+        return y;
     }
 
     public int getNumOfCells() {

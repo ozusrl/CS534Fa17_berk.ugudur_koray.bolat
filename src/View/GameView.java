@@ -44,32 +44,12 @@ public class GameView extends JPanel {
     }
 
     private void paintSymbols(Graphics g) {
-        int cellIndex = 0;
         for (Segment s : game.getBoard().getSegments()) {
             for (Cell c : s.getCells()) {
-                Symbol symbol = c.getSymbol();
-                int tempCellIndex = (cellIndex + (numOfCells / 2));
-                int x = calculateXPositionOfSymbol(tempCellIndex);
-                int y = calculateYPositionOfSymbol(tempCellIndex, x);
-                g.drawImage(getSymbolImage(symbol), x, y, cellSize, cellSize, this);
-                cellIndex++;
+                Image image = getSymbolImage(c.getSymbol());
+                g.drawImage(image, c.getX() + 24, c.getY() + 10, cellSize, cellSize, this);
             }
         }
-    }
-
-    private int calculateXPositionOfSymbol(int tempCellIndex){
-        int x = 24 + (tempCellIndex / numOfCells) * cellSize * 2;
-        return x;
-    }
-
-    private int calculateYPositionOfSymbol(int tempCellIndex, int x) {
-        int remaining = (tempCellIndex / numOfCells) % 2;
-        int y;
-        if (remaining == 0)
-            y = 10 + (tempCellIndex % numOfCells) * cellSize * 2;
-        else
-            y = 10 + Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * cellSize * 2;
-        return y;
     }
 
     private Image getSymbolImage(Symbol symbol) {
