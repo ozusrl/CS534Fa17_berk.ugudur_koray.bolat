@@ -2,13 +2,14 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class MainFrame extends JFrame {
 
     private GameView gameView = new GameView();
     private RightPanel rightPanel = new RightPanel();
 
-    public MainFrame(){
+    public MainFrame() throws IOException {
         this.setSize(1280,720);
         init();
     }
