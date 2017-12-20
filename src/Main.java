@@ -1,5 +1,7 @@
 
 
+import Model.Board;
+import Model.Game;
 import View.MainFrame;
 
 import javax.swing.*;
@@ -14,8 +16,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello pirates!");
-        Main m1 = new Main();
-        MainFrame mainFrame = new MainFrame();
+        Board board = new Board(6,3);
+        Game game = new Game(board,4,30,6);
+        MainFrame mainFrame = new MainFrame(game);
         mainFrame.setVisible(true);
     }
 }

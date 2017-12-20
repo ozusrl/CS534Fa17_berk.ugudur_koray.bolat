@@ -13,9 +13,9 @@ public class MainFrame extends JFrame {
     private RightPanel rightPanel = new RightPanel();
     private Game game;
 
-    public MainFrame() throws IOException {
+    public MainFrame(Game game) throws IOException {
         this.setSize(1280,720);
-        game = new Game(new Board(6,6),4,30,6);
+        this.game = game;
         gameView = new GameView(game);
         init();
     }

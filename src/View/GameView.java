@@ -32,7 +32,7 @@ public class GameView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int segmentSize = 6;
+        int segmentSize = game.getBoard().getNumOfSegments();
         g.drawImage(seg_start, 0, 0, 96, 288, this);
         for (int i = 0; i < segmentSize; i++) {
             int x = i * 96;
