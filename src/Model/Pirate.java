@@ -5,8 +5,18 @@ package Model;
  */
 public class Pirate {
 
-private Cell currentCell;
-    public Pirate(Cell currentCell){
-        this.currentCell = currentCell;
+private int currentCellPosition;
+
+public Pirate(int currentCellPosition){
+        this.currentCellPosition = currentCellPosition;
+    }
+
+
+    public int getCurrentCellPosition() {
+        return currentCellPosition;
+    }
+
+    public void setCurrentCellPosition(int currentCellPosition) {
+        this.currentCellPosition = currentCellPosition;
     }
 }
