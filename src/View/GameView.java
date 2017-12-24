@@ -8,9 +8,12 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameView extends JPanel {
     private ArrayList<Color> colors;
+    private Map<Symbol, Image> imageMap;
     private Image seg_0;
     private Image seg_1;
     private Image seg_start;
@@ -19,15 +22,14 @@ public class GameView extends JPanel {
     private int cellSize;
 
     public GameView(Game game) throws IOException {
-        seg_0 = ImageIO.read(new File("img/seg_02.png"));
-        seg_1 = ImageIO.read(new File("img/seg_12.png"));
-        seg_start = ImageIO.read(new File("img/seg_start2.png"));
         this.game = game;
         this.numOfCells = game.getBoard().getNumOfCells();
         this.cellSize = 48;
         this.setBackground(new Color(73, 204, 212));
         this.colors = new ArrayList<>();
+        this.imageMap = new HashMap<>();
         setColors();
+        setImages();
     }
 
     private void setColors() {
@@ -37,6 +39,16 @@ public class GameView extends JPanel {
         colors.add(new Color(0, 255, 0));
         colors.add(new Color(0, 0, 255));
         colors.add(new Color(122, 100, 0));
+    }
+
+    private void setImages() throws IOException {
+        seg_0 = ImageIO.read(new File("img/seg_02.png"));
+        seg_1 = ImageIO.read(new File("img/seg_12.png"));
+        seg_start = ImageIO.read(new File("img/seg_start2.png"));
+        Symbol[] symbols = Symbol.values();
+        for (Symbol symbol : symbols) {
+            imageMap.put(symbol, ImageIO.read(new File("img/symbols/" + symbol.toString() + ".png")));
+        }
     }
 
     @Override
@@ -57,24 +69,13 @@ public class GameView extends JPanel {
     private void paintSymbols(Graphics g) {
         for (Segment s : game.getBoard().getSegments()) {
             for (Cell c : s.getCells()) {
-                Image image = getSymbolImage(c.getSymbol());
+                Image image = imageMap.get(c.getSymbol());
                 g.drawImage(image, c.getX() + 24, c.getY() + 10, cellSize, cellSize, this);
             }
         }
     }
 
-    private Image getSymbolImage(Symbol symbol) {
-        Image image = null;
-        try {
-            image = ImageIO.read(new File("img/symbols/" + symbol.toString() + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
-
     private void paintPirates(Graphics g) {
-
         ArrayList<Cell> cells = game.getBoard().getAllCells();
         for (int i = 0; i < cells.size(); i++) {
             ArrayList<Pirate> pirates = game.getPiratesOnCell(cells.get(i).getIndex());
@@ -83,7 +84,7 @@ public class GameView extends JPanel {
                 Player player = game.getPlayers().get(pirate.getPlayerIndex());
                 int x = getCellX(pirate.getCurrentCellIndex() + 3) + 24;
                 x = x + j * 16;
-                int y = getCellY(pirate.getCurrentCellIndex() + 3)+ 64;
+                int y = getCellY(pirate.getCurrentCellIndex() + 3) + 64;
                 paintPirate(g, player, pirate, x, y);
             }
         }
