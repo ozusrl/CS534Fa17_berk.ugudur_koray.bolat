@@ -12,6 +12,7 @@ public class Game {
     private ArrayList<Card> deck;
     private final int STARTING_HAND_CARD_NUMBER = 5;
     private final int STARTING_CELL = -1;
+    private int currentPlayerIndex;
     private int endCell;
 
     public Game(Board board, int numOfPlayers, int numOfEachSymbolOnDeck, int numOfPirates) {
@@ -25,7 +26,8 @@ public class Game {
     }
 
     private void setup() {
-        endCell= board.getAllCells().size();
+        endCell = board.getAllCells().size();
+        this.currentPlayerIndex = 0;
         setupPlayers();
         setupDeck();
         addPirates();
@@ -38,19 +40,17 @@ public class Game {
 
     }
 
-
-
     private void addPirates() {
-        for(int i=0; i<players.size();i++){
-            for(int j=0; j<numOfPirates; j++){
-                players.get(i).addPirate(new Pirate(STARTING_CELL));
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < numOfPirates; j++) {
+                players.get(i).addPirate(new Pirate(j, i, STARTING_CELL));
             }
         }
     }
 
     private void setupPlayers() {
         for (int i = 0; i < numOfPlayers; i++)
-            players.add(new Player(board,numOfPirates,i));
+            players.add(new Player(board, numOfPirates, i));
     }
 
     private void setupDeck() {
@@ -62,13 +62,87 @@ public class Game {
     }
 
     private void playersDrawCards() {
+        for (Player player : players) {
+            drawCard(player, STARTING_HAND_CARD_NUMBER);
+        }
+    }
 
-        for(int i=0;i<players.size();i++){
-            for(int j=0;j<STARTING_HAND_CARD_NUMBER;j++){
-                players.get(i).drawCard(deck.get(0));
-                deck.remove(0);
+    private void drawCard(Player player, int drawCount) {
+        for (int i = 0; i < drawCount; i++) {
+            player.drawCard(deck.get(0));
+            deck.remove(0);
+        }
+    }
+
+    private void switchToNextPlayer() {
+        currentPlayerIndex++;
+        currentPlayerIndex = currentPlayerIndex % players.size();
+    }
+
+    public void moveForward(Pirate pirate, Card card) {
+        int cellIndex = getFirstAvailableCellOnForward(pirate, card);
+        System.out.println("cellIndex: " + cellIndex);
+        pirate.move(cellIndex);
+    }
+
+    public void moveBackward(Pirate pirate) {
+        Player currentPlayer = players.get(currentPlayerIndex);
+        int cellIndex = getFirstAvailableCellOnBackward(pirate);
+        if (pirate.getCurrentCellIndex() != cellIndex) {
+            int drawableCardCount = getNumOfPiratesOnCell(cellIndex);
+            drawCard(currentPlayer, drawableCardCount);
+            pirate.move(cellIndex);
+        }
+    }
+
+
+    private int getFirstAvailableCellOnForward(Pirate pirate, Card card) {
+        int pirateCellIndex = pirate.getCurrentCellIndex();
+        for (Cell cell : board.getAllCells()) {
+            if (pirateCellIndex < cell.getIndex() && card.getSymbol() == cell.getSymbol()) {
+                if (getNumOfPiratesOnCell(cell.getIndex()) == 0)
+                    return cell.getIndex();
             }
         }
+        return 0; //last cell'e vardıktan sonra olacak process eklenecek
+    }
+
+    private int getFirstAvailableCellOnBackward(Pirate pirate) {
+        int pirateCellIndex = pirate.getCurrentCellIndex();
+        int availableCellIndex = pirate.getCurrentCellIndex();
+        for (Cell cell : board.getAllCells()) {
+            if (pirateCellIndex > cell.getIndex()) {
+                if (getNumOfPiratesOnCell(cell.getIndex()) > 0 && getNumOfPiratesOnCell(cell.getIndex()) < 3)
+                    availableCellIndex = cell.getIndex();
+            }
+        }
+        return availableCellIndex;
+    }
+
+    public int getNumOfPiratesOnCell(int cellIndex) {
+        int numOfPiratesOnCell = 0;
+        for (Player player : players) {
+            for (Pirate pirate : player.getPirates()) {
+                if (pirate.getCurrentCellIndex() == cellIndex)
+                    numOfPiratesOnCell++;
+            }
+        }
+        return numOfPiratesOnCell;
+    }
+
+    public ArrayList<Pirate> getPiratesOnCell(int cellIndex) {
+        ArrayList<Pirate> pirates = new ArrayList<>();
+        for (Player player : players) {
+            for (Pirate pirate : player.getPirates()) {
+                if (pirate.getCurrentCellIndex() == cellIndex)
+                    pirates.add(pirate);
+            }
+        }
+        return pirates;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public Board getBoard() {

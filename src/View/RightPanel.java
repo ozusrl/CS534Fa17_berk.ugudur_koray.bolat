@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RightPanel extends JPanel {
+    private JButton btn2;
 
     public RightPanel(){
         createRightPanelComponents();
@@ -28,7 +29,7 @@ public class RightPanel extends JPanel {
             }
         });
 
-        JButton btn2 = new JButton("Fall Back");
+        btn2 = new JButton("Fall Back");
         btn2.setVisible(true);
         btn2.setBounds(new Rectangle(120,72));
         middlePanel.add(btn2, BorderLayout.CENTER);
@@ -46,5 +47,9 @@ public class RightPanel extends JPanel {
         topPanel.add(r2);
 
         this.repaint();
+    }
+
+    public JButton getBtn2() {
+        return btn2;
     }
 }

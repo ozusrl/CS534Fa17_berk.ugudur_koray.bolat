@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Cell {
     private Symbol symbol;
     private int index;
-    private ArrayList<Pirate> pirates = new ArrayList<>();
     private int x;
     private int y;
 
@@ -23,14 +22,6 @@ public class Cell {
 
     public void setIndex(int index) {
         this.index = index;
-    }
-
-    public void addPirate(Pirate p){
-        pirates.add(p);
-    }
-
-    public int getPirateArraySize(){
-        return pirates.size();
     }
 
     @Override

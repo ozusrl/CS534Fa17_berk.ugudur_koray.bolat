@@ -4,19 +4,29 @@ package Model;
  * Created by berku on 17.12.2017.
  */
 public class Pirate {
+    private int index;
+    private int playerIndex;
+    private int currentCellIndex;
 
-private int currentCellPosition;
-
-public Pirate(int currentCellPosition){
-        this.currentCellPosition = currentCellPosition;
+    public Pirate(int index, int playerIndex, int currentCellIndex) {
+        this.index = index;
+        this.playerIndex = playerIndex;
+        this.currentCellIndex = currentCellIndex;
     }
 
-
-    public int getCurrentCellPosition() {
-        return currentCellPosition;
+    public int getCurrentCellIndex() {
+        return currentCellIndex;
     }
 
-    public void setCurrentCellPosition(int currentCellPosition) {
-        this.currentCellPosition = currentCellPosition;
+    public void move(int cellIndex) {
+        currentCellIndex = cellIndex;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getPlayerIndex() {
+        return playerIndex;
     }
 }
