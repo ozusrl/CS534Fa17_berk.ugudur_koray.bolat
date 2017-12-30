@@ -44,7 +44,6 @@ public class BoardView extends JPanel {
         super.paintComponent(g);
         paintSegments(g);
         paintSymbols(g);
-
     }
 
     protected void paintSegments(Graphics g) {

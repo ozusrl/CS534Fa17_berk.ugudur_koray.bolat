@@ -11,12 +11,13 @@ import java.io.IOException;
 public class MainFrame extends JFrame {
 
     private GameView gameView;
-    private RightPanel rightPanel = new RightPanel();
+    private RightPanel rightPanel;
     private Game game;
 
     public MainFrame(Game game) throws IOException {
-        this.setSize(1280,720);
+        this.setSize(1280, 720);
         this.game = game;
+        rightPanel = new RightPanel(game);
         gameView = new GameView(game);
         init();
     }
@@ -26,8 +27,12 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
-        this.add(gameView,BorderLayout.CENTER);
+        this.add(gameView, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
+
+        for (Player player : game.getPlayers())
+            System.out.println(player.toString());
+    game.getPlayers().get(2).getPirates().get(0).move(24);
         game.getPlayers().get(1).getPirates().get(0).move(12);
         game.getPlayers().get(1).getPirates().get(1).move(1);
         game.getPlayers().get(1).getPirates().get(2).move(4);
@@ -35,12 +40,12 @@ public class MainFrame extends JFrame {
         game.getPlayers().get(1).getPirates().get(4).move(11);
         game.getPlayers().get(1).getPirates().get(5).move(5);
         rightPanel.getBtn2().addActionListener(e -> {
-
-            Pirate pirate =game.getPlayers().get(2).getPirates().get(0);
+            Pirate pirate = game.getPlayers().get(2).getPirates().get(0);
             System.out.println(pirate.getCurrentCellIndex());
-            game.moveForward(pirate,new Card(Symbol.HAT));
-            //game.moveBackward(pirate);
+            //game.moveForward(pirate, new Card(Symbol.HAT));
+            game.moveBackward(pirate);
             System.out.println(pirate.getCurrentCellIndex());
+            System.out.println(game.getPlayers().get(2).toString());
             this.repaint();
         });
         this.repaint();

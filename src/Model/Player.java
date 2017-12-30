@@ -34,6 +34,10 @@ public class Player {
         return pirates;
     }
 
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
+
     @Override
     public String toString() {
         String cardSymbols = "";
