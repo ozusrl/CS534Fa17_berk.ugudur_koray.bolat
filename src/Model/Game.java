@@ -77,6 +77,7 @@ public class Game {
     private void switchToNextPlayer() {
         currentPlayerIndex++;
         currentPlayerIndex = currentPlayerIndex % players.size();
+        System.out.println("Now turn for Player " + currentPlayerIndex);
     }
 
     public void moveForward(Pirate pirate, Card card) {

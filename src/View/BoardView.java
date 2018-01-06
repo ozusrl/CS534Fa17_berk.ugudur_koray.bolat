@@ -22,10 +22,11 @@ public class BoardView extends JPanel {
     private Image seg_0;
     private Image seg_1;
     private Image seg_start;
-
+    private int cellSize;
     public BoardView(Game game) throws IOException {
         this.game = game;
         this.imageMap = new HashMap<>();
+        cellSize = Values.CELL_SIZE;
         setImages();
     }
 
@@ -48,21 +49,23 @@ public class BoardView extends JPanel {
 
     protected void paintSegments(Graphics g) {
         int segmentSize = game.getBoard().getNumOfSegments();
-        g.drawImage(seg_start, 0, 0, 96, 288, this);
+        g.drawImage(seg_start, 0, 0, cellSize * 2, cellSize*6, this);
         for (int i = 0; i < segmentSize; i++) {
-            int x = i * 96;
-            int y = ((((i % 2) + 1) % 2) * 288);
+            int x = i * cellSize * 2;
+            int y = ((((i % 2) + 1) % 2) * cellSize*6);
             Image img = (i % 2 == 0) ? seg_0 : seg_1;
-            g.drawImage(img, x, y, 192, 288, this);
+            g.drawImage(img, x, y, cellSize * 4, cellSize*6, this);
         }
     }
 
     protected void paintSymbols(Graphics g) {
-        int cellSize = 48; //Magic Number
+
         for (Segment s : game.getBoard().getSegments()) {
             for (Cell c : s.getCells()) {
                 Image image = imageMap.get(c.getSymbol());
-                g.drawImage(image, c.getX() + 24, c.getY() + 10, cellSize, cellSize, this);
+                int x = c.getX() + (Values.CELL_SIZE / 2);
+                int y = c.getY() + (Values.CELL_SIZE / 4);
+                g.drawImage(image, x, y, cellSize, cellSize, this);
             }
         }
     }

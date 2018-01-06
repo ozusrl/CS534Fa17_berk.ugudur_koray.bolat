@@ -1,5 +1,7 @@
 package Model;
 
+import View.Values;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -39,7 +41,7 @@ public class Segment {
 
     private int calculateXPositionOfCell(int tempCellIndex){
         //TODO: Magic number
-        int x = (tempCellIndex / numOfCells) * 48 * 2;
+        int x = (tempCellIndex / numOfCells) * Values.CELL_SIZE * 2;
         return x;
     }
 
@@ -48,9 +50,9 @@ public class Segment {
         int remaining = (tempCellIndex / numOfCells) % 2;
         int y;
         if (remaining == 0)
-            y = (tempCellIndex % numOfCells) * 48 * 2;
+            y = (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
         else
-            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * 48 * 2;
+            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
         return y;
     }
 

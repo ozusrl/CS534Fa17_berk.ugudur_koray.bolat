@@ -55,14 +55,15 @@ public class GameView extends JPanel {
 
     private void paintPirate(Graphics g, Player player, Pirate pirate, int x, int y) {
         g.setColor(colors.get(pirate.getIndex()));
-        g.fillOval(x, y - 3, 16, 16);
+        int sizeOuter = Values.CELL_SIZE / 3;
+        g.fillOval(x, y - 3, sizeOuter, sizeOuter);
         g.setColor(colors.get(player.getIndex()));
+        //TODO: Magic number
         g.fillOval(x + 3, y, 10, 10);
     }
 
     private int getCellX(int tempCellIndex) {
-        //TODO: Magic number
-        int x = (tempCellIndex / numOfCells) * 48 * 2;
+        int x = (tempCellIndex / numOfCells) * Values.CELL_SIZE * 2;
         return x;
     }
 
@@ -71,9 +72,9 @@ public class GameView extends JPanel {
         int remaining = (tempCellIndex / numOfCells) % 2;
         int y;
         if (remaining == 0)
-            y = (tempCellIndex % numOfCells) * 48 * 2;
+            y = (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
         else
-            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * 48 * 2;
+            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
         return y;
     }
 

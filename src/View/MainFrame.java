@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
 
         for (Player player : game.getPlayers())
             System.out.println(player.toString());
-    game.getPlayers().get(2).getPirates().get(0).move(24);
+        game.getPlayers().get(2).getPirates().get(0).move(24);
         game.getPlayers().get(1).getPirates().get(0).move(12);
         game.getPlayers().get(1).getPirates().get(1).move(1);
         game.getPlayers().get(1).getPirates().get(2).move(4);

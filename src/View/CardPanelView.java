@@ -19,7 +19,7 @@ public class CardPanelView extends JPanel {
         this.game = game;
         this.cardMap = cardMap;
         this.playerLabels = new ArrayList<>();
-        this.setPreferredSize(new Dimension(350, 600));
+        this.setPreferredSize(Values.RIGHT_PANEL_DIMENSION);
         this.setBackground(new Color(226, 170, 130));
         this.setLayout(null);
         setPlayerLabels();
@@ -50,7 +50,8 @@ public class CardPanelView extends JPanel {
             for (Card card : player.getHand()) {
                 Image img = cardMap.get(card.getSymbol());
                 Point location = calculateLocationOfCard(player.getIndex(), cardIndex);
-                g.drawImage(img, location.x, location.y, 40, 40, this);
+                Dimension cardDimension = Values.CARD_DIMENSION;
+                g.drawImage(img, location.x, location.y, cardDimension.width, cardDimension.height, this);
                 cardIndex++;
             }
         }
@@ -58,8 +59,12 @@ public class CardPanelView extends JPanel {
     }
 
     protected Point calculateLocationOfCard(int playerIndex, int cardIndex) {
-        int x = (cardIndex % 10) * 32;
-        int y = (playerIndex * 110) + ((cardIndex % 2) * 2) + (20 + (cardIndex / 10 * 45));
+        int column = (cardIndex % Values.MAX_CARD_ON_ROW);
+        int x = column * Values.CARD_X_GAP;
+        int yBase = (playerIndex * Values.RIGHT_PANEL_START_Y);
+        int yJut = ((cardIndex % Values.Y_JUT) * Values.Y_JUT);
+        int row = (Values.CARD_Y_BASE + (cardIndex / Values.MAX_CARD_ON_ROW * Values.CARD_Y_GAP));
+        int y = yBase + yJut + row;
         return new Point(x, y);
     }
 }
