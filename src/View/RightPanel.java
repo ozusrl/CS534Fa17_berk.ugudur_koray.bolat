@@ -6,8 +6,6 @@ import Model.Symbol;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,6 +15,7 @@ public class RightPanel extends JPanel {
     private JButton btn2;
     private CardPanelView cardPanelView;
     private ScoreBoardView scoreBoardView;
+    private PlayPanel playPanel;
     private Map<Symbol, Image> cardMap;
     private Game game;
 
@@ -27,12 +26,14 @@ public class RightPanel extends JPanel {
         this.btn2 = new JButton("selam");
         this.cardPanelView = new CardPanelView(game, cardMap);
         this.scoreBoardView = new ScoreBoardView(game);
-
+        this.playPanel = new PlayPanel(game, cardMap);
         this.setPreferredSize(new Dimension(370,500));
         this.setBackground(new Color(236,204,180));
         this.add(scoreBoardView);
         createRightPanelComponents();
         this.add(cardPanelView);
+        this.add(playPanel);
+        playPanel.setVisible(false);
     }
     private void setCardImages() throws IOException {
         Symbol[] symbols = Symbol.values();
@@ -47,10 +48,15 @@ public class RightPanel extends JPanel {
         this.add(showCardsButton);
         this.add(btn2);
         showCardsButton.addActionListener(e -> {
-            if(cardPanelView.isVisible())
+            if(cardPanelView.isVisible()){
                 cardPanelView.setVisible(false);
-            else
+                playPanel.setVisible(true);
+            }
+            else{
                 cardPanelView.setVisible(true);
+                playPanel.setVisible(false);
+            }
+
         });
         this.repaint();
     }
@@ -63,5 +69,9 @@ public class RightPanel extends JPanel {
 
     public JButton getBtn2() {
         return btn2;
+    }
+
+    public PlayPanel getPlayPanel(){
+        return playPanel;
     }
 }

@@ -48,6 +48,9 @@ public class MainFrame extends JFrame {
             System.out.println(game.getPlayers().get(2).toString());
             this.repaint();
         });
-        this.repaint();
+    }
+
+    public RightPanel getRightPanel(){
+        return rightPanel;
     }
 }

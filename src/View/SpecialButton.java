@@ -8,15 +8,26 @@ import java.io.File;
 
 public class SpecialButton extends JButton {
     String imagePath;
+    Image image;
 
     public SpecialButton(String imagePath) {
         this.imagePath = imagePath;
         createButton();
     }
 
+    public SpecialButton(Image image) {
+        this.image = image;
+        createButton();
+    }
+
     private void createButton() {
         try {
-            Image img = ImageIO.read(new File(imagePath));
+            Image img = null;
+            if (image != null) {
+                img = image;
+            } else {
+                img = ImageIO.read(new File(imagePath));
+            }
             this.setIcon(new ImageIcon(img));
         } catch (Exception ex) {
             System.out.println(ex);
@@ -26,8 +37,8 @@ public class SpecialButton extends JButton {
         this.setBorder(emptyBorder);
     }
 
-    public void setBackColor(int r,int b,int g){
-        this.setBackground(new Color(r,b,g));
+    public void setBackColor(int r, int b, int g) {
+        this.setBackground(new Color(r, b, g));
     }
 
 }

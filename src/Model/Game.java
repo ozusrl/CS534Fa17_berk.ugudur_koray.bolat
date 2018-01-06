@@ -74,7 +74,7 @@ public class Game {
         }
     }
 
-    private void switchToNextPlayer() {
+    public void switchToNextPlayer() {
         currentPlayerIndex++;
         currentPlayerIndex = currentPlayerIndex % players.size();
         System.out.println("Now turn for Player " + currentPlayerIndex);
@@ -145,7 +145,9 @@ public class Game {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
+    public Player getCurrentPlayer(){
+        return players.get(currentPlayerIndex);
+    }
     public Board getBoard() {
         return board;
     }
