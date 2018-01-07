@@ -17,18 +17,8 @@ public class GameView extends JPanel {
         this.game = game;
         this.numOfCells = game.getBoard().getNumOfCells();
         this.setBackground(new Color(73, 204, 212));
-        this.colors = new ArrayList<>();
         this.boardView = new BoardView(game);
-        setColors();
-    }
-
-    private void setColors() {
-        colors.add(new Color(0, 0, 0));
-        colors.add(new Color(255, 255, 255));
-        colors.add(new Color(255, 0, 0));
-        colors.add(new Color(0, 255, 0));
-        colors.add(new Color(0, 0, 255));
-        colors.add(new Color(122, 100, 0));
+        colors = new Colors().getColors();
     }
 
     @Override

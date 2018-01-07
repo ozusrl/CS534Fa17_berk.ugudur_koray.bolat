@@ -3,10 +3,14 @@ package Controller;
 import Model.Card;
 import Model.Game;
 import Model.Pirate;
-import Model.Symbol;
+import Model.Player;
 import View.CardButton;
 import View.MainFrame;
 import View.PlayPanel;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by berku on 6.1.2018.
@@ -15,62 +19,116 @@ public class GameController {
     private MainFrame mainFrame;
     private PlayPanel playPanel;
     private Card chosenCard;
+    private Pirate chosenPirate;
     private Game game;
 
     public GameController(MainFrame mainFrame, Game game) {
         this.mainFrame = mainFrame;
         this.game = game;
         this.playPanel = mainFrame.getRightPanel().getPlayPanel();
-        setButtonsForward();
+        init();
+    }
+
+    private void init() {
+        setForwardDirection();
         addDirectionListeners();
-        addPlayListener();
-        addCardListeners();
+        addPlayButtonListener();
+        addSkipButtonListener();
+        playPanel.addCardButtons();
+        playPanel.addPirateButtons();
+        playPanel.getPlay().setEnabled(false);
+        playPanel.getSkip().setEnabled(false);
+        addCardButtonsListeners();
+        addPirateButtonsListeners();
+
     }
 
     private void addDirectionListeners() {
         playPanel.getBackward().addActionListener(e -> {
-            setButtonsBackward();
+            setBackwardDirection();
         });
         playPanel.getForward().addActionListener(e -> {
-            setButtonsForward();
+            setForwardDirection();
         });
     }
 
-    private void setButtonsBackward() {
-        playPanel.getBackward().setEnabled(true);
-        playPanel.getForward().setEnabled(false);
+    private void setBackwardDirection() {
+        playPanel.updateCurrentDirection("backward");
+        playPanel.getBackward().setEnabled(false);
+        playPanel.getForward().setEnabled(true);
         playPanel.setCardButtonsEnabled(false);
+        playPanel.getPlay().setEnabled(true);
     }
 
-    private void setButtonsForward() {
+    private void setForwardDirection() {
+        playPanel.updateCurrentDirection("forward");
         playPanel.getForward().setEnabled(false);
         playPanel.getBackward().setEnabled(true);
         playPanel.setCardButtonsEnabled(true);
+        if (chosenCard != null)
+            playPanel.getPlay().setEnabled(true);
+        else
+            playPanel.getPlay().setEnabled(false);
     }
 
-    private void addPlayListener() {
+    private void addPlayButtonListener() {
         playPanel.getPlay().addActionListener(e -> {
-            Pirate pirate =game.getPlayers().get(2).getPirates().get(0);
+            Player player = game.getCurrentPlayer();
+            Pirate pirate = chosenPirate;
             if (!playPanel.getForward().isEnabled()) {
                 game.moveForward(pirate, chosenCard);
             } else {
-                game.moveBackward(game.getPlayers().get(2).getPirates().get(0));
+                game.moveBackward(pirate);
             }
-            game.switchToNextPlayer();
-            mainFrame.repaint();
-            playPanel.repaintCardButtons();
-            setButtonsForward();
-            addCardListeners();
+            switchTurnRoutine();
         });
     }
 
-    private void addCardListeners() {
+    private void switchTurnRoutine() {
+        game.switchTurn();
+        mainFrame.repaint();
+        playPanel.repaintCardButtons();
+        addCardButtonsListeners();
+        addPirateButtonsListeners();
+        resetChosenCard();
+        setSkipButton();
+        playPanel.updatePlayerLabel(game.getCurrentPlayer());
+        setForwardDirection();
+    }
+
+    private void addCardButtonsListeners() {
         for (CardButton c : playPanel.getCardButtons()) {
-            System.out.println(c.getCard().toString());
             c.addActionListener(e -> {
                 chosenCard = c.getCard();
                 playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
+                setForwardDirection();
             });
         }
+    }
+    private void addPirateButtonsListeners() {
+        for (JButton c : playPanel.getPirateButtons()) {
+            c.addActionListener(e -> {
+                chosenPirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(c.getText()));
+               // playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
+                playPanel.updateCurrentPirateLabel(chosenPirate);
+                setForwardDirection();
+            });
+        }
+    }
+    private void addSkipButtonListener() {
+        playPanel.getSkip().addActionListener(e -> {
+            switchTurnRoutine();
+        });
+    }
+
+    private void setSkipButton() {
+        if (game.getTurnNumber() == 1)
+            playPanel.getSkip().setEnabled(true);
+        else
+            playPanel.getSkip().setEnabled(false);
+    }
+
+    private void resetChosenCard() {
+        chosenCard = null;
     }
 }

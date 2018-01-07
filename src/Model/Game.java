@@ -10,9 +10,11 @@ public class Game {
     private int numOfPirates;
     private ArrayList<Player> players;
     private ArrayList<Card> deck;
-    private final int STARTING_HAND_CARD_NUMBER = 12;
+    private final int STARTING_HAND_CARD_NUMBER = 15;
     private final int STARTING_CELL = -1;
+    private String[] names = {"Asaf Sparrow","Black Berk","Kızılkayalar","Bambi","Demir Ayak"};
     private int currentPlayerIndex;
+    private int turnNumber;
     private int endCell;
 
     public Game(Board board, int numOfPlayers, int numOfEachSymbolOnDeck, int numOfPirates) {
@@ -28,6 +30,7 @@ public class Game {
     private void setup() {
         endCell = board.getAllCells().size();
         this.currentPlayerIndex = 0;
+        this.turnNumber = 0;
         setupPlayers();
         setupDeck();
         addPirates();
@@ -50,7 +53,7 @@ public class Game {
 
     private void setupPlayers() {
         for (int i = 0; i < numOfPlayers; i++)
-            players.add(new Player(board, numOfPirates, i));
+            players.add(new Player(board, numOfPirates, i, names[i]));
     }
 
     private void setupDeck() {
@@ -73,7 +76,13 @@ public class Game {
             deck.remove(0);
         }
     }
-
+    public void switchTurn(){
+        turnNumber++;
+        if(turnNumber == 2){
+            turnNumber = 0;
+            switchToNextPlayer();
+        }
+    }
     public void switchToNextPlayer() {
         currentPlayerIndex++;
         currentPlayerIndex = currentPlayerIndex % players.size();
@@ -83,6 +92,7 @@ public class Game {
     public void moveForward(Pirate pirate, Card card) {
         int cellIndex = getFirstAvailableCellOnForward(pirate, card);
         System.out.println("cellIndex: " + cellIndex);
+        players.get(pirate.getPlayerIndex()).discard(card);
         pirate.move(cellIndex);
     }
 
@@ -150,5 +160,8 @@ public class Game {
     }
     public Board getBoard() {
         return board;
+    }
+    public int getTurnNumber() {
+        return turnNumber;
     }
 }
