@@ -59,11 +59,11 @@ public class GameController {
         setNullCardAndPirate();
         playPanel.getPlay().setEnabled(false);
 
-        for(JButton btn: playPanel.getPirateButtons()){
+        for (JButton btn : playPanel.getPirateButtons()) {
             Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
-            boolean isMostBack = game.isMostBack(pirate);
-            boolean isFinished = pirate.getCurrentCellIndex()==game.getBoard().getEndCell().getIndex();
-            btn.setEnabled(!isMostBack && !isFinished);
+            boolean canMove = game.getFirstAvailableCellOnBackward(pirate) != pirate.getCurrentCellIndex();
+            boolean isFinished = pirate.getCurrentCellIndex() == game.getBoard().getEndCell().getIndex();
+            btn.setEnabled(canMove && !isFinished);
         }
     }
 
@@ -74,11 +74,12 @@ public class GameController {
         setNullCardAndPirate();
         playPanel.getPlay().setEnabled(false);
 
-        for(JButton btn: playPanel.getPirateButtons()){
+        for (JButton btn : playPanel.getPirateButtons()) {
             Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
-            btn.setEnabled(!(pirate.getCurrentCellIndex()==game.getBoard().getEndCell().getIndex()));
+            btn.setEnabled(!(pirate.getCurrentCellIndex() == game.getBoard().getEndCell().getIndex()));
         }
     }
+
     private void addPlayButtonListener() {
         playPanel.getPlay().addActionListener(e -> {
             Player player = game.getCurrentPlayer();
@@ -101,38 +102,46 @@ public class GameController {
         addPirateButtonsListeners();
         resetChosenCard();
         setSkipButton();
-       setNullCardAndPirate();
+        setNullCardAndPirate();
         playPanel.updatePlayerLabel(game.getCurrentPlayer());
         setForwardDirection();
+        if(game.isFinished()){
+            JOptionPane.showMessageDialog(mainFrame,"GAMEOVER, WINNER: " + game.getWinner().getName());
+        }
     }
-    private void setNullCardAndPirate(){
+
+
+    private void setNullCardAndPirate() {
         chosenCard = null;
-        chosenPirate =null;
+        chosenPirate = null;
         playPanel.getCurrentCard().setText("Current Card: Not Selected");
         playPanel.updateCurrentPirateLabel(null);
         chosenPirate = null;
     }
+
     private void addCardButtonsListeners() {
         for (CardButton c : playPanel.getCardButtons()) {
             c.addActionListener(e -> {
                 chosenCard = c.getCard();
                 playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
-                if(chosenPirate != null)
+                if (chosenPirate != null)
                     playPanel.getPlay().setEnabled(true);
             });
         }
     }
+
     private void addPirateButtonsListeners() {
         for (JButton c : playPanel.getPirateButtons()) {
             c.addActionListener(e -> {
                 chosenPirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(c.getText()));
-               // playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
+                // playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
                 playPanel.updateCurrentPirateLabel(chosenPirate);
-                if(chosenCard != null || !playPanel.getBackward().isEnabled())
+                if (chosenCard != null || !playPanel.getBackward().isEnabled())
                     playPanel.getPlay().setEnabled(true);
             });
         }
     }
+
     private void addSkipButtonListener() {
         playPanel.getSkip().addActionListener(e -> {
             switchTurnRoutine();
