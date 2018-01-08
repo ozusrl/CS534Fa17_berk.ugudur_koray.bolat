@@ -33,29 +33,8 @@ public class Segment {
         for (int i = 0; i < numOfCells; i++) {
             Cell cell = cells.get(i);
             cell.setIndex((index * numOfCells) + i);
-            int tempCellIndex = cell.getIndex() + (numOfCells / 2);
-            cell.setX(calculateXPositionOfCell(tempCellIndex));
-            cell.setY(calculateYPositionOfCell(tempCellIndex));
         }
     }
-
-    private int calculateXPositionOfCell(int tempCellIndex){
-        //TODO: Magic number
-        int x = (tempCellIndex / numOfCells) * Values.CELL_SIZE * 2;
-        return x;
-    }
-
-    private int calculateYPositionOfCell(int tempCellIndex) {
-        //TODO: Magic number
-        int remaining = (tempCellIndex / numOfCells) % 2;
-        int y;
-        if (remaining == 0)
-            y = (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
-        else
-            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
-        return y;
-    }
-
     public int getNumOfCells() {
         return numOfCells;
     }

@@ -10,7 +10,7 @@ public class Game {
     private int numOfPirates;
     private ArrayList<Player> players;
     private ArrayList<Card> deck;
-    private final int STARTING_HAND_CARD_NUMBER = 15;
+    private final int STARTING_HAND_CARD_NUMBER = 14;
     private final int STARTING_CELL = -1;
     private String[] names = {"Asaf Sparrow","Black Berk","Kızılkayalar","Bambi","Demir Ayak"};
     private int currentPlayerIndex;
@@ -106,7 +106,6 @@ public class Game {
         }
     }
 
-
     private int getFirstAvailableCellOnForward(Pirate pirate, Card card) {
         int pirateCellIndex = pirate.getCurrentCellIndex();
         for (Cell cell : board.getAllCells()) {
@@ -115,7 +114,7 @@ public class Game {
                     return cell.getIndex();
             }
         }
-        return 0; //last cell'e vardıktan sonra olacak process eklenecek
+        return board.getEndCell().getIndex();
     }
 
     private int getFirstAvailableCellOnBackward(Pirate pirate) {
@@ -150,6 +149,18 @@ public class Game {
             }
         }
         return pirates;
+    }
+
+    public boolean isMostBack(Pirate pirate){
+        for(Player player : players){
+            for(Pirate p: player.getPirates()){
+                if(p.getCurrentCellIndex() != -1){
+                    if(p.getCurrentCellIndex() < pirate.getCurrentCellIndex())
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
     public ArrayList<Player> getPlayers() {

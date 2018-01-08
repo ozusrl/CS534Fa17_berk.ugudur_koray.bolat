@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RightPanel extends JPanel {
-    private JButton btn2;
     private CardPanelView cardPanelView;
     private ScoreBoardView scoreBoardView;
     private PlayPanel playPanel;
@@ -23,7 +22,6 @@ public class RightPanel extends JPanel {
         this.game = game;
         this.cardMap = new HashMap<>();
         setCardImages();
-        this.btn2 = new JButton("selam");
         this.cardPanelView = new CardPanelView(game, cardMap);
         this.scoreBoardView = new ScoreBoardView(game);
         this.playPanel = new PlayPanel(game, cardMap);
@@ -46,7 +44,6 @@ public class RightPanel extends JPanel {
         SpecialButton showCardsButton = new SpecialButton("img/button/showcards.png");
 
         this.add(showCardsButton);
-        this.add(btn2);
         showCardsButton.addActionListener(e -> {
             if(cardPanelView.isVisible()){
                 cardPanelView.setVisible(false);
@@ -66,10 +63,6 @@ public class RightPanel extends JPanel {
         super.paintComponent(g);
     }
 
-
-    public JButton getBtn2() {
-        return btn2;
-    }
 
     public PlayPanel getPlayPanel(){
         return playPanel;

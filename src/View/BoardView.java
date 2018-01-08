@@ -63,10 +63,29 @@ public class BoardView extends JPanel {
         for (Segment s : game.getBoard().getSegments()) {
             for (Cell c : s.getCells()) {
                 Image image = imageMap.get(c.getSymbol());
-                int x = c.getX() + (Values.CELL_SIZE / 2);
-                int y = c.getY() + (Values.CELL_SIZE / 4);
+                int x = calculateXPositionOfCell(c.getIndex()+3) + (Values.CELL_SIZE / 2);
+                int y = calculateYPositionOfCell(c.getIndex()+3) + (Values.CELL_SIZE / 4);
                 g.drawImage(image, x, y, cellSize, cellSize, this);
             }
         }
     }
+
+    private int calculateXPositionOfCell(int tempCellIndex){
+        //TODO: Magic number
+        int x = (tempCellIndex / game.getBoard().getNumOfCells()) * Values.CELL_SIZE * 2;
+        return x;
+    }
+
+    private int calculateYPositionOfCell(int tempCellIndex) {
+        //TODO: Magic number
+        int numOfCells = game.getBoard().getNumOfCells();
+        int remaining = (tempCellIndex / numOfCells) % 2;
+        int y;
+        if (remaining == 0)
+            y = (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
+        else
+            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
+        return y;
+    }
+
 }

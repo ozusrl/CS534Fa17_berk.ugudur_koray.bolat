@@ -29,7 +29,7 @@ public class CardPanelView extends JPanel {
     protected void setPlayerLabels() {
         for (Player player : game.getPlayers()) {
             JLabel label = new JLabel("PLAYER " + player.getIndex());
-            label.setBounds(20, (player.getIndex() * 110) + 5, 150, 10);
+            label.setBounds(20, (player.getIndex() * 110) + 5, 150, 15);
             this.add(label);
             playerLabels.add(label);
         }
@@ -38,7 +38,7 @@ public class CardPanelView extends JPanel {
     protected void updatePlayerLabels() {
         for (Player player : game.getPlayers()) {
             JLabel label = playerLabels.get(player.getIndex());
-            label.setText("PLAYER " + player.getIndex() + " (" + player.getHand().size() + " cards)");
+            label.setText(player.getName() + " (" + player.getHand().size() + " cards)");
         }
     }
 
@@ -60,7 +60,7 @@ public class CardPanelView extends JPanel {
 
     protected Point calculateLocationOfCard(int playerIndex, int cardIndex) {
         int column = (cardIndex % Values.MAX_CARD_ON_ROW);
-        int x = column * Values.CARD_X_GAP;
+        int x = Values.PADDING + column * Values.CARD_X_GAP;
         int yBase = (playerIndex * Values.RIGHT_PANEL_START_Y);
         int yJut = ((cardIndex % Values.Y_JUT) * Values.Y_JUT);
         int row = (Values.CARD_Y_BASE + (cardIndex / Values.MAX_CARD_ON_ROW * Values.CARD_Y_GAP));

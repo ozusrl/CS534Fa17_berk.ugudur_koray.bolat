@@ -9,11 +9,15 @@ public class Board {
 
     private ArrayList<Segment> segments;
     private ArrayList<Cell> allCells = new ArrayList<>();
-
-
+    private Cell startCell;
+    private Cell endCell;
     public Board(int numOfCells, int numOfSegments) {
         this.numOfCells = numOfCells;
         this.numOfSegments = numOfSegments;
+        this.startCell = new Cell(null);
+        this.endCell = new Cell(null);
+        this.startCell.setIndex(-1);
+        this.endCell.setIndex(numOfCells*numOfSegments);
         this.segments = new ArrayList<>(numOfSegments);
         createSegments();
         setAllCells();
@@ -54,6 +58,14 @@ public class Board {
 
     public ArrayList<Cell> getAllCells(){
         return allCells;
+    }
+
+    public Cell getStartCell() {
+        return startCell;
+    }
+
+    public Cell getEndCell() {
+        return endCell;
     }
 
     @Override
