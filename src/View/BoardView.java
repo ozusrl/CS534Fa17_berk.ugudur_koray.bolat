@@ -48,13 +48,14 @@ public class BoardView extends JPanel {
     }
 
     protected void paintSegments(Graphics g) {
+        int y = (Values.HEIGHT - cellSize * 12) / 3;
         int segmentSize = game.getBoard().getNumOfSegments();
-        g.drawImage(seg_start, 0, 0, cellSize * 2, cellSize*6, this);
+        g.drawImage(seg_start, 0, y, cellSize * 2, cellSize*6, this);
         for (int i = 0; i < segmentSize; i++) {
             int x = i * cellSize * 2;
-            int y = ((((i % 2) + 1) % 2) * cellSize*6);
+            int y1 = y + ((((i % 2) + 1) % 2) * cellSize*6);
             Image img = (i % 2 == 0) ? seg_0 : seg_1;
-            g.drawImage(img, x, y, cellSize * 4, cellSize*6, this);
+            g.drawImage(img, x, y1, cellSize * 4, cellSize*6, this);
         }
     }
 
@@ -70,22 +71,23 @@ public class BoardView extends JPanel {
         }
     }
 
-    private int calculateXPositionOfCell(int tempCellIndex){
+    public int calculateXPositionOfCell(int tempCellIndex){
         //TODO: Magic number
         int x = (tempCellIndex / game.getBoard().getNumOfCells()) * Values.CELL_SIZE * 2;
         return x;
     }
 
-    private int calculateYPositionOfCell(int tempCellIndex) {
+    public int calculateYPositionOfCell(int tempCellIndex) {
         //TODO: Magic number
+        int y = (Values.HEIGHT - Values.CELL_SIZE * 12) / 3;
         int numOfCells = game.getBoard().getNumOfCells();
         int remaining = (tempCellIndex / numOfCells) % 2;
-        int y;
+        int y1;
         if (remaining == 0)
-            y = (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
+            y1 = y+(tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
         else
-            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
-        return y;
+            y1 = y+Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
+        return y1;
     }
 
 }

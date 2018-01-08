@@ -37,9 +37,9 @@ public class GameView extends JPanel {
             for (int j = 0; j < pirates.size(); j++) {
                 Pirate pirate = pirates.get(j);
                 Player player = game.getPlayers().get(pirate.getPlayerIndex());
-                int x = getCellX(pirate.getCurrentCellIndex() + 3) + 24;
+                int x = boardView.calculateXPositionOfCell(pirate.getCurrentCellIndex() + 3) + 24;
                 x = x + j * 16;
-                int y = getCellY(pirate.getCurrentCellIndex() + 3) + 64;
+                int y = boardView.calculateYPositionOfCell(pirate.getCurrentCellIndex() + 3) + 64;
                 paintPirate(g, player, pirate, x, y);
             }
         }
@@ -50,9 +50,9 @@ public class GameView extends JPanel {
         for (int j = 0; j < pirates.size(); j++) {
             Pirate pirate = pirates.get(j);
             Player player = game.getPlayers().get(pirate.getPlayerIndex());
-            int x = getCellX(pirate.getCurrentCellIndex() + 1) + 24;
+            int x = boardView.calculateXPositionOfCell(pirate.getCurrentCellIndex() + 1) + 24;
             x = x + (j % 3) * 16;
-            int y = getCellY(pirate.getCurrentCellIndex() + 1) + 24 + (18 * (j / 3));
+            int y = boardView.calculateYPositionOfCell(pirate.getCurrentCellIndex() + 1) + 24 + (18 * (j / 3));
             paintPirate(g, player, pirate, x, y);
         }
     }
@@ -63,9 +63,9 @@ public class GameView extends JPanel {
         for (int j = 0; j < pirates.size(); j++) {
             Pirate pirate = pirates.get(j);
             Player player = game.getPlayers().get(pirate.getPlayerIndex());
-            int x = getCellX(pirate.getCurrentCellIndex() + plusIndex) + 25;
+            int x = boardView.calculateXPositionOfCell(pirate.getCurrentCellIndex() + plusIndex) + 25;
             x = x + (j % 3) * 16;
-            int y = getCellY(pirate.getCurrentCellIndex() + plusIndex) + 24 + (18 * (j / 3));
+            int y = boardView.calculateYPositionOfCell(pirate.getCurrentCellIndex() + plusIndex) + 24 + (18 * (j / 3));
             paintPirate(g, player, pirate, x, y);
         }
     }
@@ -77,22 +77,6 @@ public class GameView extends JPanel {
         g.setColor(colors.get(player.getIndex()));
         //TODO: Magic number
         g.fillOval(x + 2, y - 1, 12, 12);
-    }
-
-    private int getCellX(int tempCellIndex) {
-        int x = (tempCellIndex / numOfCells) * Values.CELL_SIZE * 2;
-        return x;
-    }
-
-    private int getCellY(int tempCellIndex) {
-        //TODO: Magic number
-        int remaining = (tempCellIndex / numOfCells) % 2;
-        int y;
-        if (remaining == 0)
-            y = (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
-        else
-            y = Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
-        return y;
     }
 
 }

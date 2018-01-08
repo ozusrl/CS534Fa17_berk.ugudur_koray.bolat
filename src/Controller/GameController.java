@@ -57,12 +57,8 @@ public class GameController {
         playPanel.getBackward().setEnabled(false);
         playPanel.getForward().setEnabled(true);
         playPanel.setCardButtonsEnabled(false);
-        playPanel.updateCurrentPirateLabel(null);
-        chosenPirate = null;
-        if (chosenPirate != null)
-            playPanel.getPlay().setEnabled(true);
-        else
-            playPanel.getPlay().setEnabled(false);
+        setNullCardAndPirate();
+        playPanel.getPlay().setEnabled(false);
 
         for(JButton btn: playPanel.getPirateButtons()){
             Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
@@ -77,10 +73,8 @@ public class GameController {
         playPanel.getForward().setEnabled(false);
         playPanel.getBackward().setEnabled(true);
         playPanel.setCardButtonsEnabled(true);
-        if (chosenCard != null && chosenPirate != null)
-            playPanel.getPlay().setEnabled(true);
-        else
-            playPanel.getPlay().setEnabled(false);
+        setNullCardAndPirate();
+        playPanel.getPlay().setEnabled(false);
 
         for(JButton btn: playPanel.getPirateButtons()){
             Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
@@ -109,16 +103,24 @@ public class GameController {
         addPirateButtonsListeners();
         resetChosenCard();
         setSkipButton();
+       setNullCardAndPirate();
         playPanel.updatePlayerLabel(game.getCurrentPlayer());
         setForwardDirection();
     }
-
+    private void setNullCardAndPirate(){
+        chosenCard = null;
+        chosenPirate =null;
+        playPanel.getCurrentCard().setText("Current Card: Not Selected");
+        playPanel.updateCurrentPirateLabel(null);
+        chosenPirate = null;
+    }
     private void addCardButtonsListeners() {
         for (CardButton c : playPanel.getCardButtons()) {
             c.addActionListener(e -> {
                 chosenCard = c.getCard();
                 playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
-                setForwardDirection();
+                if(chosenPirate != null)
+                    playPanel.getPlay().setEnabled(true);
             });
         }
     }
@@ -128,7 +130,8 @@ public class GameController {
                 chosenPirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(c.getText()));
                // playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
                 playPanel.updateCurrentPirateLabel(chosenPirate);
-                playPanel.getPlay().setEnabled(true);
+                if(chosenCard != null || !playPanel.getBackward().isEnabled())
+                    playPanel.getPlay().setEnabled(true);
             });
         }
     }

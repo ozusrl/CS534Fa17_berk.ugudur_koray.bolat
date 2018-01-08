@@ -51,8 +51,9 @@ public class PlayPanel extends JPanel {
         currentDirection.setBounds(0, size.height - 400, 200, 50);
         currentPlayer.setBounds(0, size.height - 110, 200, 50);
         currentPirate.setBounds(0, size.height - 170, 200, 50);
-        backward.setBounds(0, Values.PADDING, size.width / 2, Values.BUTTON_HEIGHT);
-        forward.setBounds(size.width / 2, Values.PADDING, size.width / 2, Values.BUTTON_HEIGHT);
+        backward.setBounds(Values.PADDING, Values.PADDING, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
+        int forwardX= (Values.PADDING)+(Values.PADDING/2)+Values.BUTTON_WIDTH;
+        forward.setBounds(forwardX, Values.PADDING, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
         play.setBounds(0, size.height - 50, size.width - 75, 50);
         skip.setBounds(size.width - 75, size.height - 50, 75, 50);
 
@@ -141,7 +142,7 @@ public class PlayPanel extends JPanel {
         System.out.println("cur:" + game.getCurrentPlayer().getIndex());
         for (Card c : game.getCurrentPlayer().getHand()) {
             int x = Values.PADDING +(i % 7) * 45;
-            int y = Values.BUTTON_HEIGHT + Values.PADDING * 2 + (i / 7 * 45);
+            int y = 40 + Values.BUTTON_HEIGHT + Values.PADDING * 3 + (i / 7 * 45);
             CardButton btn = new CardButton(c, cardMap.get(c.getSymbol()).getScaledInstance(40,40,Image.SCALE_DEFAULT));
             btn.setBounds(x, y, 42, 42);
             cardButtons.add(btn);
@@ -166,7 +167,10 @@ public class PlayPanel extends JPanel {
             int index = p.getIndex();
             JButton btn = new JButton("" + index);
             btn.setBackground(colors.get(index));
-            btn.setBounds(index * 46, this.getPreferredSize().height - 136, 45, 45);
+            int width = (this.getPreferredSize().width - Values.PADDING*2)/game.getNumOfPirates();
+            int x = Values.PADDING + (index * (width));
+            int y = Values.PADDING*2 + Values.BUTTON_HEIGHT;
+            btn.setBounds(x, y, width, 40);
             pirateButtons.add(btn);
             this.add(btn);
         }
