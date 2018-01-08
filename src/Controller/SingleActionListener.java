@@ -34,7 +34,7 @@ public class SingleActionListener implements ActionListener {
         startPanel.add(label2);
         startPanel.add(pirateList);
 
-        Integer[] segmentNumber = {1, 2, 3, 4, 5, 6};
+        Integer[] segmentNumber = {2, 3, 4, 5, 6,7,8};
         JLabel label3 = new JLabel("Segment Number: ");
         JComboBox segmentList = new JComboBox(segmentNumber);
 
