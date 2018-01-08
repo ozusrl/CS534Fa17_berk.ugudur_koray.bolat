@@ -12,13 +12,16 @@ public class Game {
     private ArrayList<Card> deck;
     private final int STARTING_HAND_CARD_NUMBER = 24;
     private final int STARTING_CELL = -1;
+
+
     private String[] names = {"Asaf Sparrow","Black Berk","Kızılkayalar","Bambi","Demir Ayak"};
     private int currentPlayerIndex;
     private int turnNumber;
     private int endCell;
 
-    public Game(Board board, int numOfPlayers, int numOfEachSymbolOnDeck, int numOfPirates) {
+    public Game(Board board, int numOfPlayers, int numOfEachSymbolOnDeck, int numOfPirates, String[] names) {
         this.board = board;
+        this.names = names;
         this.numOfPlayers = numOfPlayers;
         this.numOfEachSymbolOnDeck = numOfEachSymbolOnDeck;
         this.players = new ArrayList<>(numOfPlayers);
