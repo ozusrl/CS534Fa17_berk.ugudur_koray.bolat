@@ -5,8 +5,11 @@ import Model.Game;
 import Model.Player;
 import Model.Symbol;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -29,7 +32,7 @@ public class CardPanelView extends JPanel {
     protected void setPlayerLabels() {
         for (Player player : game.getPlayers()) {
             JLabel label = new JLabel("PLAYER " + player.getIndex());
-            label.setBounds(20, (player.getIndex() * 110) + 5, 150, 15);
+            label.setBounds(20, (player.getIndex() * 110) + 16, 150, 15);
             this.add(label);
             playerLabels.add(label);
         }
@@ -45,13 +48,20 @@ public class CardPanelView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Image img = null;
+        try {
+            img = ImageIO.read(new File("img/bg2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g.drawImage(img,0,0,350,600,this);
         for (Player player : game.getPlayers()) {
             int cardIndex = 0;
             for (Card card : player.getHand()) {
-                Image img = cardMap.get(card.getSymbol());
+                Image img2 = cardMap.get(card.getSymbol());
                 Point location = calculateLocationOfCard(player.getIndex(), cardIndex);
                 Dimension cardDimension = Values.CARD_DIMENSION;
-                g.drawImage(img, location.x, location.y, cardDimension.width, cardDimension.height, this);
+                g.drawImage(img2, location.x, location.y, cardDimension.width, cardDimension.height, this);
                 cardIndex++;
             }
         }
@@ -63,7 +73,7 @@ public class CardPanelView extends JPanel {
         int x = Values.PADDING + column * Values.CARD_X_GAP;
         int yBase = (playerIndex * Values.RIGHT_PANEL_START_Y);
         int yJut = ((cardIndex % Values.Y_JUT) * Values.Y_JUT);
-        int row = (Values.CARD_Y_BASE + (cardIndex / Values.MAX_CARD_ON_ROW * Values.CARD_Y_GAP));
+        int row = 16 + (Values.CARD_Y_BASE + (cardIndex / Values.MAX_CARD_ON_ROW * Values.CARD_Y_GAP));
         int y = yBase + yJut + row;
         return new Point(x, y);
     }

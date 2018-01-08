@@ -26,7 +26,7 @@ public class RightPanel extends JPanel {
         this.scoreBoardView = new ScoreBoardView(game);
         this.playPanel = new PlayPanel(game, cardMap);
         this.setPreferredSize(new Dimension(370,500));
-        this.setBackground(new Color(236,204,180));
+        this.setBackground(new Color(73, 204, 212));
         this.add(scoreBoardView);
         createRightPanelComponents();
         this.add(cardPanelView);
@@ -61,6 +61,7 @@ public class RightPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
     }
 
 

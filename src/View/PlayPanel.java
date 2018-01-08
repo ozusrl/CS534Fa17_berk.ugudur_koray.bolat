@@ -2,10 +2,13 @@ package View;
 
 import Model.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -17,10 +20,10 @@ public class PlayPanel extends JPanel {
     private Map<Symbol, Image> cardMap;
     private int justStart;
     private ArrayList<Color> colors;
-    private JButton play;
+    private SpecialButton play;
     private SpecialButton forward;
     private SpecialButton backward;
-    private JButton skip;
+    private SpecialButton skip;
     private JLabel currentCard;
     private JLabel currentPlayer;
     private JLabel currentPirate;
@@ -29,7 +32,7 @@ public class PlayPanel extends JPanel {
 
     public PlayPanel(Game game, Map<Symbol, Image> cardMap) {
         this.setPreferredSize(Values.RIGHT_PANEL_DIMENSION);
-        this.setBackground(new Color(226, 170, 130));
+        this.setBackground(new Color(244, 182, 141));
         this.setLayout(null);
         this.game = game;
         this.cardMap = cardMap;
@@ -39,20 +42,21 @@ public class PlayPanel extends JPanel {
         this.colors = new Colors().getColors();
         forward = new SpecialButton("img/button/forward.png");
         backward = new SpecialButton("img/button/backward.png");
-        play = new JButton("Play");
-        skip = new JButton("Skip");
+        play = new SpecialButton("img/button/play.png");
+        skip = new SpecialButton("img/button/skip.png");
         currentCard = new JLabel("Current Card:");
         currentPlayer = new JLabel(game.getCurrentPlayer().getName(), SwingConstants.CENTER);
         currentPirate = new JLabel("Current Pirate: ");
         Dimension size = this.getPreferredSize();
-        currentCard.setBounds(0, size.height - 300, 350, 50);
+        currentCard.setBounds(16, size.height - 110, 350, 20);
+        currentCard.setForeground(new Color(0,0,0));
         currentPlayer.setBounds(0, Values.PADDING/2, 350, 16);
-        currentPirate.setBounds(0, size.height - 170, 200, 50);
+        currentPirate.setBounds(16, size.height - 90, 200, 20);
         backward.setBounds(Values.PADDING, Values.PADDING*2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
-        int forwardX= (Values.PADDING)+(Values.PADDING/2)+Values.BUTTON_WIDTH;
+        int forwardX= (Values.PADDING*2+Values.BUTTON_WIDTH);
         forward.setBounds(forwardX, Values.PADDING*2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
-        play.setBounds(0, size.height - 50, size.width - 75, 50);
-        skip.setBounds(size.width - 75, size.height - 50, 75, 50);
+        play.setBounds(Values.PADDING, size.height - Values.PADDING - 48, 242, Values.BUTTON_HEIGHT*3);
+        skip.setBounds(240+Values.PADDING*2, size.height - Values.PADDING -48, 60, Values.BUTTON_HEIGHT*3);
 
 
         this.add(currentCard);
@@ -175,7 +179,13 @@ public class PlayPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        Image img = null;
+        try {
+            img = ImageIO.read(new File("img/bg2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g.drawImage(img,0,0,350,600,this);
     }
 
     public void updatePlayerLabel(Player player) {
