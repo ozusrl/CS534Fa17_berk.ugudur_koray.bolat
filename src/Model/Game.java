@@ -10,7 +10,7 @@ public class Game {
     private int numOfPirates;
     private ArrayList<Player> players;
     private ArrayList<Card> deck;
-    private final int STARTING_HAND_CARD_NUMBER = 18;
+    private final int STARTING_HAND_CARD_NUMBER = 6;
     private final int STARTING_CELL = -1;
     private String[] names = {"Asaf Sparrow","Black Berk","Kızılkayalar","Bambi","Demir Ayak"};
     private int currentPlayerIndex;

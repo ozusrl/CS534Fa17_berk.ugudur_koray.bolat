@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello pirates!");
         Board board = new Board(6, 6);
-        Game game = new Game(board, 5, 30, 6);
+        Game game = new Game(board, 2, 30, 6);
         MainFrame mainFrame = new MainFrame(game);
         mainFrame.setVisible(true);
         GameController gameController = new GameController(mainFrame, game);

@@ -53,7 +53,6 @@ public class GameController {
     }
 
     private void setBackwardDirection() {
-        playPanel.updateCurrentDirection("backward");
         playPanel.getBackward().setEnabled(false);
         playPanel.getForward().setEnabled(true);
         playPanel.setCardButtonsEnabled(false);
@@ -69,7 +68,6 @@ public class GameController {
     }
 
     private void setForwardDirection() {
-        playPanel.updateCurrentDirection("forward");
         playPanel.getForward().setEnabled(false);
         playPanel.getBackward().setEnabled(true);
         playPanel.setCardButtonsEnabled(true);

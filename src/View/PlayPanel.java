@@ -22,7 +22,6 @@ public class PlayPanel extends JPanel {
     private SpecialButton backward;
     private JButton skip;
     private JLabel currentCard;
-    private JLabel currentDirection;
     private JLabel currentPlayer;
     private JLabel currentPirate;
     private ArrayList<CardButton> cardButtons;
@@ -43,23 +42,20 @@ public class PlayPanel extends JPanel {
         play = new JButton("Play");
         skip = new JButton("Skip");
         currentCard = new JLabel("Current Card:");
-        currentDirection = new JLabel("Current Direction: ");
-        currentPlayer = new JLabel("Current Player: ");
+        currentPlayer = new JLabel(game.getCurrentPlayer().getName(), SwingConstants.CENTER);
         currentPirate = new JLabel("Current Pirate: ");
         Dimension size = this.getPreferredSize();
-        currentCard.setBounds(0, size.height - 300, 200, 50);
-        currentDirection.setBounds(0, size.height - 400, 200, 50);
-        currentPlayer.setBounds(0, size.height - 110, 200, 50);
+        currentCard.setBounds(0, size.height - 300, 350, 50);
+        currentPlayer.setBounds(0, Values.PADDING/2, 350, 16);
         currentPirate.setBounds(0, size.height - 170, 200, 50);
-        backward.setBounds(Values.PADDING, Values.PADDING, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
+        backward.setBounds(Values.PADDING, Values.PADDING*2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
         int forwardX= (Values.PADDING)+(Values.PADDING/2)+Values.BUTTON_WIDTH;
-        forward.setBounds(forwardX, Values.PADDING, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
+        forward.setBounds(forwardX, Values.PADDING*2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
         play.setBounds(0, size.height - 50, size.width - 75, 50);
         skip.setBounds(size.width - 75, size.height - 50, 75, 50);
 
 
         this.add(currentCard);
-        this.add(currentDirection);
         this.add(currentPlayer);
         this.add(currentPirate);
         this.add(forward);
@@ -72,9 +68,6 @@ public class PlayPanel extends JPanel {
         currentCard.setText("Current Card: " + x);
     }
 
-    public void updateCurrentDirection(String direction) {
-        currentDirection.setText("Current Direction: " + direction);
-    }
 
     public void updateCurrentPirateLabel(Pirate pirate) {
         if (pirate == null) {
@@ -103,9 +96,6 @@ public class PlayPanel extends JPanel {
         return currentCard;
     }
 
-    public JLabel getCurrentDirection() {
-        return currentDirection;
-    }
 
     public JButton getSkip() {
         return skip;
@@ -142,7 +132,7 @@ public class PlayPanel extends JPanel {
         System.out.println("cur:" + game.getCurrentPlayer().getIndex());
         for (Card c : game.getCurrentPlayer().getHand()) {
             int x = Values.PADDING +(i % 7) * 45;
-            int y = 40 + Values.BUTTON_HEIGHT + Values.PADDING * 3 + (i / 7 * 45);
+            int y = 40 + Values.BUTTON_HEIGHT + Values.PADDING * 4 + (i / 7 * 45);
             CardButton btn = new CardButton(c, cardMap.get(c.getSymbol()).getScaledInstance(40,40,Image.SCALE_DEFAULT));
             btn.setBounds(x, y, 42, 42);
             cardButtons.add(btn);
@@ -169,7 +159,7 @@ public class PlayPanel extends JPanel {
             btn.setBackground(colors.get(index));
             int width = (this.getPreferredSize().width - Values.PADDING*2)/game.getNumOfPirates();
             int x = Values.PADDING + (index * (width));
-            int y = Values.PADDING*2 + Values.BUTTON_HEIGHT;
+            int y = Values.PADDING*3 + Values.BUTTON_HEIGHT;
             btn.setBounds(x, y, width, 40);
             pirateButtons.add(btn);
             this.add(btn);
