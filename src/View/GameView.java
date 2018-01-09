@@ -79,4 +79,7 @@ public class GameView extends JPanel {
         g.fillOval(x + 2, y - 1, 12, 12);
     }
 
+    public BoardView getBoardView() {
+        return boardView;
+    }
 }

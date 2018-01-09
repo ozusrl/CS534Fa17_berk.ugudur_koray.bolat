@@ -23,11 +23,15 @@ public class BoardView extends JPanel {
     private Image seg_1;
     private Image seg_start;
     private int cellSize;
+    private int targetCell;
+    private boolean isTargeted;
+    private Graphics g;
 
     public BoardView(Game game) throws IOException {
         this.game = game;
         this.imageMap = new HashMap<>();
         cellSize = Values.CELL_SIZE;
+        targetCell = -1;
         setImages();
     }
 
@@ -44,8 +48,19 @@ public class BoardView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        this.g = g;
         paintSegments(g);
         paintSymbols(g);
+        if(isTargeted){
+            paintTargetCell(targetCell);
+        }
+    }
+
+    private void paintTargetCell(int cellIndex){
+        g.setColor(new Color(102, 199, 0,90));
+        int x = calculateXPositionOfCell(cellIndex);
+        int y = calculateYPositionOfCell(cellIndex);
+        g.fillOval(x+20,y+8,54,54);
     }
 
     protected void paintSegments(Graphics g) {
@@ -93,4 +108,19 @@ public class BoardView extends JPanel {
         return y1;
     }
 
+    public int getTargetCell() {
+        return targetCell;
+    }
+
+    public void setTargetCell(int targetCell) {
+        this.targetCell = targetCell;
+    }
+
+    public boolean isTargeted() {
+        return isTargeted;
+    }
+
+    public void setTargeted(boolean targeted) {
+        isTargeted = targeted;
+    }
 }

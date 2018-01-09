@@ -4,13 +4,12 @@ import Model.Card;
 import Model.Game;
 import Model.Pirate;
 import Model.Player;
+import View.BoardView;
 import View.CardButton;
 import View.MainFrame;
 import View.PlayPanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by berku on 6.1.2018.
@@ -18,12 +17,14 @@ import java.awt.event.ActionListener;
 public class GameController {
     private MainFrame mainFrame;
     private PlayPanel playPanel;
+    private BoardView boardView;
     private Card chosenCard;
     private Pirate chosenPirate;
     private Game game;
 
     public GameController(MainFrame mainFrame, Game game) {
         this.mainFrame = mainFrame;
+        this.boardView = mainFrame.getGameView().getBoardView();
         this.game = game;
         this.playPanel = mainFrame.getRightPanel().getPlayPanel();
         init();
@@ -96,6 +97,7 @@ public class GameController {
 
     private void switchTurnRoutine() {
         game.switchTurn();
+        boardView.setTargeted(false);
         mainFrame.repaint();
         playPanel.repaintCardButtons();
         addCardButtonsListeners();
@@ -105,8 +107,8 @@ public class GameController {
         setNullCardAndPirate();
         playPanel.updatePlayerLabel(game.getCurrentPlayer());
         setForwardDirection();
-        if(game.isFinished()){
-            JOptionPane.showMessageDialog(mainFrame,"GAMEOVER, WINNER: " + game.getWinner().getName());
+        if (game.isFinished()) {
+            JOptionPane.showMessageDialog(mainFrame, "GAMEOVER, WINNER: " + game.getWinner().getName());
         }
     }
 
@@ -124,8 +126,12 @@ public class GameController {
             c.addActionListener(e -> {
                 chosenCard = c.getCard();
                 playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
-                if (chosenPirate != null)
+                if (chosenPirate != null) {
                     playPanel.getPlay().setEnabled(true);
+                    int cellIndex = game.getFirstAvailableCellOnForward(chosenPirate, chosenCard);
+                    setTargetCell(cellIndex);
+                    mainFrame.repaint();
+                }
             });
         }
     }
@@ -136,10 +142,23 @@ public class GameController {
                 chosenPirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(c.getText()));
                 // playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
                 playPanel.updateCurrentPirateLabel(chosenPirate);
-                if (chosenCard != null || !playPanel.getBackward().isEnabled())
+                if (chosenCard != null || !playPanel.getBackward().isEnabled()){
                     playPanel.getPlay().setEnabled(true);
+                    int cellIndex;
+                    if(!playPanel.getBackward().isEnabled())
+                        cellIndex = game.getFirstAvailableCellOnBackward(chosenPirate);
+                    else
+                        cellIndex = game.getFirstAvailableCellOnForward(chosenPirate, chosenCard);
+                    setTargetCell(cellIndex);
+                    mainFrame.repaint();
+                }
             });
         }
+    }
+
+    private void setTargetCell(int cellIndex){
+        boardView.setTargeted(true);
+        boardView.setTargetCell(cellIndex + 3);
     }
 
     private void addSkipButtonListener() {

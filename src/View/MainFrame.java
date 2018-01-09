@@ -35,4 +35,8 @@ public class MainFrame extends JFrame {
     public RightPanel getRightPanel(){
         return rightPanel;
     }
+
+    public GameView getGameView() {
+        return gameView;
+    }
 }

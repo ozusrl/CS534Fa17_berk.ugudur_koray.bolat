@@ -110,7 +110,7 @@ public class Game {
         }
     }
 
-    private int getFirstAvailableCellOnForward(Pirate pirate, Card card) {
+    public int getFirstAvailableCellOnForward(Pirate pirate, Card card) {
         int pirateCellIndex = pirate.getCurrentCellIndex();
         for (Cell cell : board.getAllCells()) {
             if (pirateCellIndex < cell.getIndex() && card.getSymbol() == cell.getSymbol()) {
