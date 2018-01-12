@@ -32,7 +32,7 @@ public class StartGameListener implements ActionListener {
             playerNames[i] = playerNamesFields[i].getText();
         }
         Board board = new Board(6,segmentCount);
-        Game game = new Game(board,playerNamesFields.length,30,pirateCount,playerNames,startHandCount);
+        Game game = new Game(board,playerNamesFields.length, pirateCount, startHandCount, 30, playerNames);
         MainFrame mainFrame;
         try {
             mainFrame = new MainFrame(game);

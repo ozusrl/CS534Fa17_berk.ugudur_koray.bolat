@@ -1,37 +1,42 @@
 package Model;
 
-import javax.lang.model.type.NullType;
 import java.util.ArrayList;
+
+/* Refactored 12.01.2018 14:43 */
 
 public class Board {
     private int numOfCells;
     private int numOfSegments;
-
     private ArrayList<Segment> segments;
-    private ArrayList<Cell> allCells = new ArrayList<>();
     private Cell startCell;
     private Cell endCell;
+    private ArrayList<Cell> cells = new ArrayList<>();
+
     public Board(int numOfCells, int numOfSegments) {
         this.numOfCells = numOfCells;
         this.numOfSegments = numOfSegments;
-        this.startCell = new Cell(null);
-        this.endCell = new Cell(null);
-        this.startCell.setIndex(-1);
-        this.endCell.setIndex(numOfCells*numOfSegments);
         this.segments = new ArrayList<>(numOfSegments);
         createSegments();
-        setAllCells();
-       /* for testing cells
-        for(Segment s: segments){
-            for(Cell c: s.getCells()){
-                System.out.println(c.toString());
-            }
-        }*/
+        setStartAndEndCells();
+        setCells();
     }
 
     private void createSegments() {
         for (int i = 0; i < numOfSegments; i++)
             segments.add(new Segment(i, numOfCells));
+    }
+
+    private void setStartAndEndCells() {
+        this.startCell = new Cell(-1,null);
+        this.endCell = new Cell(numOfCells * numOfSegments,null);
+    }
+
+    private void setCells() {
+        if (cells.isEmpty()) {
+            for (Segment segment : segments) {
+                cells.addAll(segment.getCells());
+            }
+        }
     }
 
     public int getNumOfSegments() {
@@ -46,18 +51,8 @@ public class Board {
         return segments;
     }
 
-    public void  setAllCells() {
-        if (allCells.size() == 0) {
-            for (int i = 0; i < segments.size(); i++) {
-                for (int j = 0; j < segments.get(i).getCells().size(); j++) {
-                    allCells.add(segments.get(i).getCells().get(j));
-                }
-            }
-        }
-    }
-
-    public ArrayList<Cell> getAllCells(){
-        return allCells;
+    public ArrayList<Cell> getCells() {
+        return cells;
     }
 
     public Cell getStartCell() {

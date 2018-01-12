@@ -1,12 +1,13 @@
 package Model;
 
-import java.util.ArrayList;
+/* Refactored 12.01.2018 14:54 */
 
 public class Cell {
     private Symbol symbol;
     private int index;
 
-    public Cell(Symbol symbol) {
+    public Cell(int index, Symbol symbol) {
+        this.index = index;
         this.symbol = symbol;
     }
 

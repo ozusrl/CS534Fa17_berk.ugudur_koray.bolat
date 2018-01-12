@@ -62,7 +62,7 @@ public class GameController {
 
         for (JButton btn : playPanel.getPirateButtons()) {
             Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
-            boolean canMove = game.getFirstAvailableCellOnBackward(pirate) != pirate.getCurrentCellIndex();
+            boolean canMove = game.getAvailableCellIndexOnBackward(pirate) != pirate.getCurrentCellIndex();
             boolean isFinished = pirate.getCurrentCellIndex() == game.getBoard().getEndCell().getIndex();
             btn.setEnabled(canMove && !isFinished);
         }
@@ -128,7 +128,7 @@ public class GameController {
                 playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
                 if (chosenPirate != null) {
                     playPanel.getPlay().setEnabled(true);
-                    int cellIndex = game.getFirstAvailableCellOnForward(chosenPirate, chosenCard);
+                    int cellIndex = game.getAvailableCellIndexOnForward(chosenPirate, chosenCard);
                     setTargetCell(cellIndex);
                     mainFrame.repaint();
                 }
@@ -146,9 +146,9 @@ public class GameController {
                     playPanel.getPlay().setEnabled(true);
                     int cellIndex;
                     if(!playPanel.getBackward().isEnabled())
-                        cellIndex = game.getFirstAvailableCellOnBackward(chosenPirate);
+                        cellIndex = game.getAvailableCellIndexOnBackward(chosenPirate);
                     else
-                        cellIndex = game.getFirstAvailableCellOnForward(chosenPirate, chosenCard);
+                        cellIndex = game.getAvailableCellIndexOnForward(chosenPirate, chosenCard);
                     setTargetCell(cellIndex);
                     mainFrame.repaint();
                 }

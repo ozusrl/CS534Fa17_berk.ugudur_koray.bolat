@@ -2,18 +2,18 @@ package Model;
 
 import java.util.ArrayList;
 
+/* Refactored 12.01.2018 14:58 */
+
 public class Player {
 
     private String name;
     private int index;
-    private int numOfPirates;
     private ArrayList<Pirate> pirates;
     private ArrayList<Card> hand;
 
-    public Player(int numOfPirates, int index, String name) {
+    public Player(int index, String name, int numOfPirates) {
         this.index = index;
         this.name = name;
-        this.numOfPirates = numOfPirates;
         this.pirates = new ArrayList<>(numOfPirates);
         this.hand = new ArrayList<>();
     }
