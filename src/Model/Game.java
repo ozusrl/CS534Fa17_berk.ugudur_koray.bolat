@@ -57,7 +57,7 @@ public class Game {
 
     private void setupPlayers() {
         for (int i = 0; i < numOfPlayers; i++)
-            players.add(new Player(board, numOfPirates, i, names[i]));
+            players.add(new Player(numOfPirates, i, names[i]));
     }
 
     private void setupDeck() {

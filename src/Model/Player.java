@@ -4,15 +4,13 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private Board board;
     private String name;
     private int index;
     private int numOfPirates;
     private ArrayList<Pirate> pirates;
     private ArrayList<Card> hand;
 
-    public Player(Board board, int numOfPirates, int index, String name) {
-        this.board = board;
+    public Player(int numOfPirates, int index, String name) {
         this.index = index;
         this.name = name;
         this.numOfPirates = numOfPirates;
