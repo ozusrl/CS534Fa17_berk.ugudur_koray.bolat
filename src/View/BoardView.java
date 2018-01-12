@@ -26,16 +26,19 @@ public class BoardView extends JPanel {
     private int targetCell;
     private boolean isTargeted;
     private Graphics g;
+    private GameView gameView;
 
-    public BoardView(Game game) throws IOException {
+    public BoardView(Game game, GameView gameView) throws IOException {
         this.game = game;
         this.imageMap = new HashMap<>();
+        this.gameView = gameView;
         cellSize = Values.CELL_SIZE;
         targetCell = -1;
         setImages();
     }
 
     private void setImages() throws IOException {
+        System.out.println("Image load completed.");
         seg_0 = ImageIO.read(new File("img/seg_02.png"));
         seg_1 = ImageIO.read(new File("img/seg_12.png"));
         seg_start = ImageIO.read(new File("img/seg_start2.png"));
@@ -48,65 +51,106 @@ public class BoardView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        System.out.println("boardView size: " + getSize());
+        System.out.println("gameView2 size: " + gameView.getSize());
         this.g = g;
         paintSegments(g);
         paintSymbols(g);
-        if(isTargeted){
+        if (isTargeted) {
             paintTargetCell(targetCell);
         }
     }
 
-    private void paintTargetCell(int cellIndex){
-        g.setColor(new Color(102, 199, 0,90));
-        int x = calculateXPositionOfCell(cellIndex);
-        int y = calculateYPositionOfCell(cellIndex);
-        g.fillOval(x+20,y+8,54,54);
+    private void paintTargetCell(int cellIndex) {
+        g.setColor(Values.TARGET_COLOR);
+        int x = getXPositionOfCell(cellIndex);
+        int y = getYPositionOfCell(cellIndex);
+        g.fillOval(x + 20, y + 8, 54, 54);
     }
 
     protected void paintSegments(Graphics g) {
-        int y = (Values.HEIGHT - cellSize * 12) / 3;
-        int segmentSize = game.getBoard().getNumOfSegments();
-        int x = ((Values.WIDTH - 370) - (cellSize * 2 * (segmentSize + 1))) / 2;
-        g.drawImage(seg_start, x, y, cellSize * 2, cellSize * 6, this);
-        for (int i = 0; i < segmentSize; i++) {
-            int x1 = x + i * cellSize * 2;
-            int y1 = y + ((((i % 2) + 1) % 2) * cellSize * 6);
-            Image img = (i % 2 == 0) ? seg_0 : seg_1;
-            g.drawImage(img, x1, y1, cellSize * 4, cellSize * 6, this);
+        int numOfSegments = game.getBoard().getNumOfSegments();
+        int yBase = getYBasePosition();
+        int xBase = getXBasePosition();
+
+        // Draw start segment
+        g.drawImage(seg_start, xBase, yBase, Values.SEG_SINGLE_WIDTH, Values.SEG_HEIGHT, this);
+
+        // Draw default segments
+        for (int i = 0; i < numOfSegments; i++) {
+            int xSegment = i * Values.SEG_SINGLE_WIDTH;
+            int ySegment = (((i + 1) % 2) * Values.SEG_HEIGHT);
+            int x = xBase + xSegment;
+            int y = yBase + ySegment;
+            g.drawImage(getSegmentImage(i), x, y, Values.SEG_WIDTH, Values.SEG_HEIGHT, this);
         }
+
+        // Draw end segment
+        int xEndSegment = gameView.getWidth() - xBase - Values.SEG_SINGLE_WIDTH;
+        int yEndSegment = (numOfSegments % 2 == 1) ? yBase : yBase + (Values.SEG_HEIGHT);
+        g.drawImage(seg_start, xEndSegment, yEndSegment, Values.SEG_SINGLE_WIDTH, Values.SEG_HEIGHT, this);
+
+    }
+
+
+    public Image getSegmentImage(int index) {
+        return (index % 2 == 0) ? seg_0 : seg_1;
     }
 
     protected void paintSymbols(Graphics g) {
-
         for (Segment s : game.getBoard().getSegments()) {
             for (Cell c : s.getCells()) {
                 Image image = imageMap.get(c.getSymbol());
-                int x = calculateXPositionOfCell(c.getIndex() + 3) + (Values.CELL_SIZE / 2);
-                int y = calculateYPositionOfCell(c.getIndex() + 3) + (Values.CELL_SIZE / 4);
+                int x = getXPositionOfCell(c.getIndex()) + (Values.CELL_SIZE / 2);
+                int y = getYPositionOfCell(c.getIndex()) + (Values.CELL_SIZE / 4);
                 g.drawImage(image, x, y, cellSize, cellSize, this);
             }
         }
     }
 
-    public int calculateXPositionOfCell(int tempCellIndex) {
-        //TODO: Magic number
-        int x = ((Values.WIDTH - 370) - (cellSize * 2 * (game.getBoard().getNumOfSegments() + 1))) / 2;
-        int x1 = x+(tempCellIndex / game.getBoard().getNumOfCells()) * Values.CELL_SIZE * 2;
-        return x1;
+    public int getXPositionOfCell(int cellIndex) {
+        int tempCellIndex = cellIndex + calculateIndexGap(cellIndex);
+        int xBase = getXBasePosition();
+        int x = xBase + (tempCellIndex / game.getBoard().getNumOfCells()) * Values.SEG_SINGLE_WIDTH;
+        return x;
     }
 
-    public int calculateYPositionOfCell(int tempCellIndex) {
-        //TODO: Magic number
-        int y = (Values.HEIGHT - Values.CELL_SIZE * 12) / 3;
+    public int getYPositionOfCell(int cellIndex) {
+        int tempCellIndex = cellIndex + calculateIndexGap(cellIndex);
+        int yBase = getYBasePosition();
         int numOfCells = game.getBoard().getNumOfCells();
         int remaining = (tempCellIndex / numOfCells) % 2;
-        int y1;
+        int y;
         if (remaining == 0)
-            y1 = y + (tempCellIndex % numOfCells) * Values.CELL_SIZE * 2;
+            y = yBase + (tempCellIndex % numOfCells) * Values.SEG_SINGLE_WIDTH;
         else
-            y1 = y + Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.CELL_SIZE * 2;
-        return y1;
+            y = yBase + Math.abs((tempCellIndex % numOfCells) - (numOfCells - 1)) * Values.SEG_SINGLE_WIDTH;
+        return y;
     }
+
+    public int getXBasePosition() {
+        int numOfSegments = game.getBoard().getNumOfSegments();
+        int numOfSingleColumns = numOfSegments + 1;
+        return (gameView.getWidth() - (Values.SEG_SINGLE_WIDTH * numOfSingleColumns)) / 2;
+    }
+
+    public int getYBasePosition() {
+        return (gameView.getHeight() - Values.SEG_HEIGHT * 2) / 2;
+    }
+
+    public int calculateIndexGap(int cellIndex) {
+        if (cellIndex == -1)
+            return Values.START_INDEX_GAP;
+        if (cellIndex == game.getBoard().getCells().size())
+            return isNumOfSegmentsOdd() ? Values.END_ODD_INDEX_GAP : Values.END_EVEN_INDEX_GAP;
+        else
+            return Values.DEFAULT_INDEX_GAP;
+    }
+
+    public boolean isNumOfSegmentsOdd() {
+        return (game.getBoard().getNumOfSegments() % 2 == 1);
+    }
+
 
     public int getTargetCell() {
         return targetCell;

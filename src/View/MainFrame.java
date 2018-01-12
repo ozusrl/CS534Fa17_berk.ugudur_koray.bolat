@@ -23,10 +23,9 @@ public class MainFrame extends JFrame {
     }
 
     private void init() {
-        this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(1280,759));
         this.setLayout(new BorderLayout());
-
         this.add(gameView, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
 

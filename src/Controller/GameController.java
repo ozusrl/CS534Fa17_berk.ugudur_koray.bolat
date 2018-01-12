@@ -158,7 +158,7 @@ public class GameController {
 
     private void setTargetCell(int cellIndex){
         boardView.setTargeted(true);
-        boardView.setTargetCell(cellIndex + 3);
+        boardView.setTargetCell(cellIndex);
     }
 
     private void addSkipButtonListener() {
