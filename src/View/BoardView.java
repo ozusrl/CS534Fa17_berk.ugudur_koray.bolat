@@ -51,8 +51,6 @@ public class BoardView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println("boardView size: " + getSize());
-        System.out.println("gameView2 size: " + gameView.getSize());
         this.g = g;
         paintSegments(g);
         paintSymbols(g);

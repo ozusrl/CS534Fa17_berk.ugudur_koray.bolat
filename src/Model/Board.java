@@ -27,15 +27,14 @@ public class Board {
     }
 
     private void setStartAndEndCells() {
-        this.startCell = new Cell(-1,null);
-        this.endCell = new Cell(numOfCells * numOfSegments,null);
+        this.startCell = new Cell(-1, null);
+        this.endCell = new Cell(numOfCells * numOfSegments, null);
     }
 
-    private void setCells() {
-        if (cells.isEmpty()) {
-            for (Segment segment : segments) {
-                cells.addAll(segment.getCells());
-            }
+    public void setCells() {
+        cells.clear();
+        for (Segment segment : segments) {
+            cells.addAll(segment.getCells());
         }
     }
 
@@ -61,6 +60,10 @@ public class Board {
 
     public Cell getEndCell() {
         return endCell;
+    }
+
+    public void setSegments(ArrayList<Segment> segments) {
+        this.segments = segments;
     }
 
     @Override

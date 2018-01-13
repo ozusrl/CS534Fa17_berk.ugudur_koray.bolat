@@ -2,7 +2,9 @@ package Model;
 
 /* Refactored 12.01.2018 14:54 */
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable{
     private Symbol symbol;
     private int index;
 

@@ -34,6 +34,7 @@ public class StartGameListener implements ActionListener {
         Board board = new Board(6,segmentCount);
         Game game = new Game(board,playerNamesFields.length, pirateCount, startHandCount, 30, playerNames);
         MainFrame mainFrame;
+        game.start();
         try {
             mainFrame = new MainFrame(game);
             mainFrame.setVisible(true);

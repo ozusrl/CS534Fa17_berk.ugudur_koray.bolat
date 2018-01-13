@@ -1,14 +1,21 @@
 package Model;
 
-public class Card {
-    private Symbol symbol;
+import java.io.Serializable;
 
-    public Card(Symbol symbol) {
+public class Card implements Serializable{
+    private Symbol symbol;
+    private int index;
+    public Card(int index, Symbol symbol) {
+        this.index = index;
         this.symbol = symbol;
     }
 
     public Symbol getSymbol() {
         return symbol;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     @Override

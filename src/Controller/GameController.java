@@ -4,6 +4,8 @@ import Model.Card;
 import Model.Game;
 import Model.Pirate;
 import Model.Player;
+import Network.Command;
+import Network.MoveForward;
 import View.BoardView;
 import View.CardButton;
 import View.MainFrame;
@@ -21,12 +23,14 @@ public class GameController {
     private Card chosenCard;
     private Pirate chosenPirate;
     private Game game;
+    private Command lastCommand;
 
     public GameController(MainFrame mainFrame, Game game) {
         this.mainFrame = mainFrame;
         this.boardView = mainFrame.getGameView().getBoardView();
         this.game = game;
         this.playPanel = mainFrame.getRightPanel().getPlayPanel();
+        this.lastCommand = null;
         init();
     }
 
@@ -87,6 +91,7 @@ public class GameController {
 
             Pirate pirate = chosenPirate;
             if (!playPanel.getForward().isEnabled()) {
+                lastCommand = new MoveForward(pirate, chosenCard);
                 game.moveForward(pirate, chosenCard);
             } else {
                 game.moveBackward(pirate);
@@ -95,10 +100,9 @@ public class GameController {
         });
     }
 
-    private void switchTurnRoutine() {
+    public void switchTurnRoutine() {
         game.switchTurn();
         boardView.setTargeted(false);
-        mainFrame.repaint();
         playPanel.repaintCardButtons();
         addCardButtonsListeners();
         addPirateButtonsListeners();
@@ -109,7 +113,9 @@ public class GameController {
         setForwardDirection();
         if (game.isFinished()) {
             JOptionPane.showMessageDialog(mainFrame, "GAMEOVER, WINNER: " + game.getWinner().getName());
+            //mainFrame.setVisible(false);
         }
+        mainFrame.repaint();
     }
 
 
@@ -142,10 +148,10 @@ public class GameController {
                 chosenPirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(c.getText()));
                 // playPanel.getCurrentCard().setText("Current card: " + c.getCard().getSymbol().toString());
                 playPanel.updateCurrentPirateLabel(chosenPirate);
-                if (chosenCard != null || !playPanel.getBackward().isEnabled()){
+                if (chosenCard != null || !playPanel.getBackward().isEnabled()) {
                     playPanel.getPlay().setEnabled(true);
                     int cellIndex;
-                    if(!playPanel.getBackward().isEnabled())
+                    if (!playPanel.getBackward().isEnabled())
                         cellIndex = game.getAvailableCellIndexOnBackward(chosenPirate);
                     else
                         cellIndex = game.getAvailableCellIndexOnForward(chosenPirate, chosenCard);
@@ -156,7 +162,7 @@ public class GameController {
         }
     }
 
-    private void setTargetCell(int cellIndex){
+    private void setTargetCell(int cellIndex) {
         boardView.setTargeted(true);
         boardView.setTargetCell(cellIndex);
     }
@@ -177,4 +183,13 @@ public class GameController {
     private void resetChosenCard() {
         chosenCard = null;
     }
+
+    public Command getLastCommand() {
+        return lastCommand;
+    }
+
+    public void setLastCommand(Command lastCommand) {
+        this.lastCommand = lastCommand;
+    }
+
 }

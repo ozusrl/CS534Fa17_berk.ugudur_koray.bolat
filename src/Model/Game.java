@@ -36,6 +36,9 @@ public class Game {
         setupPlayers();
         setupPirates();
         setupDeck();
+    }
+
+    public void start(){
         drawStartingCards();
     }
 
@@ -57,7 +60,7 @@ public class Game {
         Symbol[] symbols = Symbol.values();
         for (int i = 0; i < symbols.length; i++)
             for (int j = 0; j < numOfEachSymbolOnDeck; j++)
-                deck.add(new Card(symbols[i]));
+                deck.add(new Card(j+i,symbols[i]));
         Collections.shuffle(deck);
     }
 
@@ -179,5 +182,13 @@ public class Game {
 
     public int getNumOfPirates() {
         return numOfPirates;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
     }
 }

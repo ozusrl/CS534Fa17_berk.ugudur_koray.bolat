@@ -1,6 +1,8 @@
 package Model;
 
-public class Pirate {
+import java.io.Serializable;
+
+public class Pirate implements Serializable{
     private int index;
     private int playerIndex;
     private int currentCellIndex;

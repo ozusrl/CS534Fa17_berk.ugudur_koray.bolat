@@ -1,12 +1,13 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 /* Refactored 12.01.2018 14:52 */
 
-public class Segment {
+public class Segment implements Serializable {
     private int index;
     private int numOfCells;
     private ArrayList<Cell> cells;

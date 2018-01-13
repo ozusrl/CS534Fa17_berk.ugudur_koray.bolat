@@ -17,6 +17,8 @@ public class RightPanel extends JPanel {
     private PlayPanel playPanel;
     private Map<Symbol, Image> cardMap;
     private Game game;
+    private boolean isMyTurn;
+    private SpecialButton showCardsButton;
 
     public RightPanel(Game game) throws IOException {
         this.game = game;
@@ -25,14 +27,18 @@ public class RightPanel extends JPanel {
         this.cardPanelView = new CardPanelView(game, cardMap);
         this.scoreBoardView = new ScoreBoardView(game);
         this.playPanel = new PlayPanel(game, cardMap);
-        this.setPreferredSize(new Dimension(370,500));
+        this.setPreferredSize(new Dimension(370, 500));
         this.setBackground(new Color(73, 204, 212));
+        this.showCardsButton = new SpecialButton("img/button/showcards.png");
         this.add(scoreBoardView);
         createRightPanelComponents();
         this.add(cardPanelView);
         this.add(playPanel);
+        this.isMyTurn = false;
+
         playPanel.setVisible(false);
     }
+
     private void setCardImages() throws IOException {
         Symbol[] symbols = Symbol.values();
         for (Symbol symbol : symbols) {
@@ -41,21 +47,29 @@ public class RightPanel extends JPanel {
     }
 
     private void createRightPanelComponents() {
-        SpecialButton showCardsButton = new SpecialButton("img/button/showcards.png");
-
         this.add(showCardsButton);
         showCardsButton.addActionListener(e -> {
-            if(cardPanelView.isVisible()){
+            if (cardPanelView.isVisible()) {
                 cardPanelView.setVisible(false);
                 playPanel.setVisible(true);
-            }
-            else{
+            } else {
                 cardPanelView.setVisible(true);
                 playPanel.setVisible(false);
             }
-
         });
-        this.repaint();
+    }
+
+    public void setRightPanel(boolean isMyTurn) {
+        if (isMyTurn) {
+            cardPanelView.setVisible(false);
+            playPanel.setVisible(true);
+            showCardsButton.setEnabled(true);
+
+        } else {
+            showCardsButton.setEnabled(false);
+            cardPanelView.setVisible(true);
+            playPanel.setVisible(false);
+        }
     }
 
     @Override
@@ -64,8 +78,15 @@ public class RightPanel extends JPanel {
 
     }
 
+    public boolean isMyTurn() {
+        return isMyTurn;
+    }
 
-    public PlayPanel getPlayPanel(){
+    public void setMyTurn(boolean myTurn) {
+        isMyTurn = myTurn;
+    }
+
+    public PlayPanel getPlayPanel() {
         return playPanel;
     }
 }
