@@ -139,7 +139,7 @@ public class BoardView extends JPanel {
     public int calculateIndexGap(int cellIndex) {
         if (cellIndex == -1)
             return Values.START_INDEX_GAP;
-        if (cellIndex == game.getBoard().getCells().size())
+        if (cellIndex == game.getBoard().getEndCell().getIndex())
             return isNumOfSegmentsOdd() ? Values.END_ODD_INDEX_GAP : Values.END_EVEN_INDEX_GAP;
         else
             return Values.DEFAULT_INDEX_GAP;

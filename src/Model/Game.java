@@ -38,7 +38,7 @@ public class Game {
         setupDeck();
     }
 
-    public void start(){
+    public void start() {
         drawStartingCards();
     }
 
@@ -60,7 +60,7 @@ public class Game {
         Symbol[] symbols = Symbol.values();
         for (int i = 0; i < symbols.length; i++)
             for (int j = 0; j < numOfEachSymbolOnDeck; j++)
-                deck.add(new Card(j+i,symbols[i]));
+                deck.add(new Card(j + i, symbols[i]));
         Collections.shuffle(deck);
     }
 
@@ -70,7 +70,6 @@ public class Game {
         }
     }
 
-    /* Game Routines */
     private void drawCard(Player player, int drawCount) {
         for (int i = 0; i < drawCount; i++) {
             player.drawCard(deck.get(0));
@@ -96,26 +95,40 @@ public class Game {
     }
 
     public int getAvailableCellIndexOnForward(Pirate pirate, Card card) {
-        int pirateCellIndex = pirate.getCurrentCellIndex();
-        for (Cell cell : board.getCells()) {
-            if (pirateCellIndex < cell.getIndex() && card.getSymbol() == cell.getSymbol()) {
-                if (getNumOfPiratesOnCell(cell.getIndex()) == 0)
+        for (Segment segment : board.getSegments()) {
+            for (Cell cell : segment.getCells()) {
+                if (canPirateMoveForwardTo(pirate, card, cell))
                     return cell.getIndex();
             }
         }
         return board.getEndCell().getIndex();
     }
 
+    private boolean canPirateMoveForwardTo(Pirate pirate, Card card, Cell cell) {
+        if (pirate.getCurrentCellIndex() < cell.getIndex() && card.getSymbol() == cell.getSymbol()) {
+            if (getNumOfPiratesOnCell(cell.getIndex()) == 0)
+                return true;
+        }
+        return false;
+    }
+
     public int getAvailableCellIndexOnBackward(Pirate pirate) {
-        int pirateCellIndex = pirate.getCurrentCellIndex();
         int availableCellIndex = pirate.getCurrentCellIndex();
-        for (Cell cell : board.getCells()) {
-            if (pirateCellIndex > cell.getIndex()) {
-                if (getNumOfPiratesOnCell(cell.getIndex()) > 0 && getNumOfPiratesOnCell(cell.getIndex()) < 3)
+        for (Segment segment : board.getSegments()) {
+            for (Cell cell : segment.getCells()) {
+                if (canPirateMoveBackwardTo(pirate, cell))
                     availableCellIndex = cell.getIndex();
             }
         }
         return availableCellIndex;
+    }
+
+    private boolean canPirateMoveBackwardTo(Pirate pirate, Cell cell) {
+        if (pirate.getCurrentCellIndex() > cell.getIndex()) {
+            if (getNumOfPiratesOnCell(cell.getIndex()) > 0 && getNumOfPiratesOnCell(cell.getIndex()) < 3)
+                return true;
+        }
+        return false;
     }
 
     private int getNumOfPiratesOnCell(int cellIndex) {
@@ -154,7 +167,7 @@ public class Game {
         }
     }
 
-    public void switchToNextPlayer() {
+    private void switchToNextPlayer() {
         currentPlayerIndex++;
         currentPlayerIndex = currentPlayerIndex % players.size();
         System.out.println("Now turn for Player " + currentPlayerIndex);

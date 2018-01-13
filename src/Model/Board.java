@@ -10,7 +10,6 @@ public class Board {
     private ArrayList<Segment> segments;
     private Cell startCell;
     private Cell endCell;
-    private ArrayList<Cell> cells = new ArrayList<>();
 
     public Board(int numOfCells, int numOfSegments) {
         this.numOfCells = numOfCells;
@@ -18,7 +17,6 @@ public class Board {
         this.segments = new ArrayList<>(numOfSegments);
         createSegments();
         setStartAndEndCells();
-        setCells();
     }
 
     private void createSegments() {
@@ -31,13 +29,6 @@ public class Board {
         this.endCell = new Cell(numOfCells * numOfSegments, null);
     }
 
-    public void setCells() {
-        cells.clear();
-        for (Segment segment : segments) {
-            cells.addAll(segment.getCells());
-        }
-    }
-
     public int getNumOfSegments() {
         return numOfSegments;
     }
@@ -48,10 +39,6 @@ public class Board {
 
     public ArrayList<Segment> getSegments() {
         return segments;
-    }
-
-    public ArrayList<Cell> getCells() {
-        return cells;
     }
 
     public Cell getStartCell() {

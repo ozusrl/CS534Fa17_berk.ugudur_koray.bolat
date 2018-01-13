@@ -50,7 +50,11 @@ public class GameView extends JPanel {
     }
 
     private void paintPirates(Graphics g) {
-        ArrayList<Cell> cells = game.getBoard().getCells();
+        ArrayList<Cell> cells = new ArrayList<>();
+        for(Segment segment: game.getBoard().getSegments())
+            for(Cell cell: segment.getCells())
+                cells.add(cell);
+
         for (int i = 0; i < cells.size(); i++) {
             ArrayList<Pirate> pirates = game.getPiratesOnCell(cells.get(i).getIndex());
             for (int j = 0; j < pirates.size(); j++) {
