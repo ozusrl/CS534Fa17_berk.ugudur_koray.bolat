@@ -5,7 +5,9 @@ import Model.Game;
 import Model.Pirate;
 import Model.Player;
 import Network.Command;
+import Network.MoveBackward;
 import Network.MoveForward;
+import Network.SkipTurn;
 import View.BoardView;
 import View.CardButton;
 import View.MainFrame;
@@ -94,6 +96,7 @@ public class GameController {
                 lastCommand = new MoveForward(pirate, chosenCard);
                 game.moveForward(pirate, chosenCard);
             } else {
+                lastCommand = new MoveBackward(pirate);
                 game.moveBackward(pirate);
             }
             switchTurnRoutine();
@@ -113,7 +116,8 @@ public class GameController {
         setForwardDirection();
         if (game.isFinished()) {
             JOptionPane.showMessageDialog(mainFrame, "GAMEOVER, WINNER: " + game.getWinner().getName());
-            //mainFrame.setVisible(false);
+            mainFrame.dispose();
+            System.exit(0);
         }
         mainFrame.repaint();
     }
@@ -169,6 +173,7 @@ public class GameController {
 
     private void addSkipButtonListener() {
         playPanel.getSkip().addActionListener(e -> {
+            lastCommand = new SkipTurn();
             switchTurnRoutine();
         });
     }
