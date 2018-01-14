@@ -15,6 +15,14 @@ Screenshot of our game:
 
 ## Compile and Run
 
+Your jar files should be same folder with **img folder**.
+
+For example:
+
+../Cartagena/CartagenaSingle.jar
+
+../Cartagena/img
+
 ### Singleplayer
 You can play on same computer with starting Singleplayer Game.
 
