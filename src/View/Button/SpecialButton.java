@@ -1,4 +1,4 @@
-package View;
+package View.Button;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

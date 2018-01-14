@@ -1,6 +1,8 @@
-package View;
+package View.Manager;
 
 import Model.Game;
+import View.MainFrame;
+import View.Constant.Values;
 
 import java.awt.*;
 
@@ -9,10 +11,10 @@ import java.awt.*;
  */
 public class PositionFinder {
     private Game game;
-    private GameView gameView;
+    private MainFrame mainFrame;
 
-    public PositionFinder(Game game, GameView gameView) {
-        this.gameView = gameView;
+    public PositionFinder(Game game, MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
         this.game = game;
     }
 
@@ -78,10 +80,20 @@ public class PositionFinder {
     public int getXBasePosition() {
         int numOfSegments = game.getBoard().getNumOfSegments();
         int numOfSingleColumns = numOfSegments + 1;
-        return (gameView.getWidth() - (Values.SEG_SINGLE_WIDTH * numOfSingleColumns)) / 2;
+        return (mainFrame.getGamePanel().getWidth() - (Values.SEG_SINGLE_WIDTH * numOfSingleColumns)) / 2;
     }
 
     public int getYBasePosition() {
-        return (gameView.getHeight() - Values.SEG_HEIGHT * 2) / 2;
+        return (mainFrame.getGamePanel().getHeight() - Values.SEG_HEIGHT * 2) / 2;
+    }
+
+    public Point getPositionOfCardOnCardPanel(int playerIndex,int cardIndex){
+        int column = (cardIndex % Values.MAX_CARD_ON_ROW);
+        int x = Values.PADDING + column * Values.CARD_X_GAP;
+        int yBase = (playerIndex * Values.RIGHT_PANEL_START_Y);
+        int yJut = ((cardIndex % Values.Y_JUT) * Values.Y_JUT);
+        int row = 16 + (Values.CARD_Y_BASE + (cardIndex / Values.MAX_CARD_ON_ROW * Values.CARD_Y_GAP));
+        int y = yBase + yJut + row;
+        return new Point(x, y);
     }
 }

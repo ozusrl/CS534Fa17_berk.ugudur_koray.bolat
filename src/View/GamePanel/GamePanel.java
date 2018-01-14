@@ -1,7 +1,9 @@
-package View;
+package View.GamePanel;
 
 import Model.*;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
+import View.Constant.Colors;
+import View.Manager.PositionFinder;
+import View.Constant.Values;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,18 +11,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameView extends JPanel {
+public class GamePanel extends JPanel {
     private ArrayList<Color> colors;
-    private BoardView boardView;
+    private BoardPanel boardPanel;
     private PositionFinder positionFinder;
     private Game game;
     private Random rnd;
 
-    public GameView(Game game) throws IOException {
+    public GamePanel(Game game, PositionFinder positionFinder) throws IOException {
         this.game = game;
+        this.positionFinder = positionFinder;
         this.setBackground(new Color(73, 204, 212));
-        this.positionFinder = new PositionFinder(game, this);
-        this.boardView = new BoardView(game, this);
+        this.boardPanel = new BoardPanel(game, positionFinder);
         colors = new Colors().getColors();
         this.rnd = new Random();
     }
@@ -29,7 +31,7 @@ public class GameView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         paintSea(g);
-        boardView.paintComponent(g);
+        boardPanel.paintComponent(g);
         paintPirates(g);
     }
 
@@ -72,8 +74,8 @@ public class GameView extends JPanel {
         g.fillOval(x + 2, y + 2, sizeOuter - 4, sizeOuter - 4);
     }
 
-    public BoardView getBoardView() {
-        return boardView;
+    public BoardPanel getBoardPanel() {
+        return boardPanel;
     }
 
     public PositionFinder getPositionFinder() {

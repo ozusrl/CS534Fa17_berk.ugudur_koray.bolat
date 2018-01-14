@@ -8,10 +8,10 @@ import Network.Command;
 import Network.MoveBackward;
 import Network.MoveForward;
 import Network.SkipTurn;
-import View.BoardView;
-import View.CardButton;
+import View.GamePanel.BoardPanel;
+import View.Button.CardButton;
 import View.MainFrame;
-import View.PlayPanel;
+import View.RightPanel.PlayPanel;
 
 import javax.swing.*;
 
@@ -21,7 +21,7 @@ import javax.swing.*;
 public class GameController {
     private MainFrame mainFrame;
     private PlayPanel playPanel;
-    private BoardView boardView;
+    private BoardPanel boardPanel;
     private Card chosenCard;
     private Pirate chosenPirate;
     private Game game;
@@ -29,7 +29,7 @@ public class GameController {
 
     public GameController(MainFrame mainFrame, Game game) {
         this.mainFrame = mainFrame;
-        this.boardView = mainFrame.getGameView().getBoardView();
+        this.boardPanel = mainFrame.getGamePanel().getBoardPanel();
         this.game = game;
         this.playPanel = mainFrame.getRightPanel().getPlayPanel();
         this.lastCommand = null;
@@ -105,7 +105,7 @@ public class GameController {
 
     public void switchTurnRoutine() {
         game.switchTurn();
-        boardView.setTargeted(false);
+        boardPanel.setTargeted(false);
         playPanel.repaintCardButtons();
         addCardButtonsListeners();
         addPirateButtonsListeners();
@@ -167,8 +167,8 @@ public class GameController {
     }
 
     private void setTargetCell(int cellIndex) {
-        boardView.setTargeted(true);
-        boardView.setTargetCell(cellIndex);
+        boardPanel.setTargeted(true);
+        boardPanel.setTargetCell(cellIndex);
     }
 
     private void addSkipButtonListener() {

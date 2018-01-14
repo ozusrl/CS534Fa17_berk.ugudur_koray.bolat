@@ -1,11 +1,8 @@
-package View;
+package View.Button;
 
 import Model.Card;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by berku on 6.1.2018.

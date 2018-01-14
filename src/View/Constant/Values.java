@@ -1,4 +1,4 @@
-package View;
+package View.Constant;
 
 import java.awt.*;
 

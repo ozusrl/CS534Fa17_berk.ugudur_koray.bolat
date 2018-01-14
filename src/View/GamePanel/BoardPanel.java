@@ -1,35 +1,30 @@
-package View;
+package View.GamePanel;
 
 import Model.Cell;
 import Model.Game;
 import Model.Segment;
-import Model.Symbol;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
+import View.Manager.ImageManager;
+import View.Manager.PositionFinder;
+import View.Constant.Values;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by berku on 30.12.2017.
  */
-public class BoardView extends JPanel {
+public class BoardPanel extends JPanel {
     private Game game;
     private ImageManager imageManager;
     private PositionFinder positionFinder;
     private int targetCell;
     private boolean isTargeted;
-    private GameView gameView;
 
-    public BoardView(Game game, GameView gameView) throws IOException {
+    public BoardPanel(Game game, PositionFinder positionFinder) throws IOException {
         this.game = game;
         this.imageManager = ImageManager.getInstance();
-        this.gameView = gameView;
-        this.positionFinder = gameView.getPositionFinder();
+        this.positionFinder = positionFinder;
         targetCell = -1;
     }
 

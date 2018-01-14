@@ -1,4 +1,4 @@
-package View;
+package View.Manager;
 
 import Model.Symbol;
 
@@ -16,14 +16,17 @@ import java.util.Map;
 public class ImageManager {
     private static ImageManager instance;
     private Map<Symbol, Image> imageMap;
+    private Map<Symbol, Image> cardMap;
     private Image downSegmentImage;
     private Image upSegmentImage;
     private Image startSegmentImage;
     private Image endSegmentImage;
+    private Image rightBackgroundImage;
 
     private ImageManager() {
         System.out.println("FileManager created.");
         this.imageMap = new HashMap<>();
+        this.cardMap = new HashMap<>();
         try {
             setImages();
         } catch (IOException e) {
@@ -43,9 +46,11 @@ public class ImageManager {
         upSegmentImage = ImageIO.read(new File("img/seg_12.png"));
         startSegmentImage = ImageIO.read(new File("img/seg_start2.png"));
         endSegmentImage = ImageIO.read(new File("img/seg_start2.png"));
+        rightBackgroundImage = ImageIO.read(new File("img/bg2.png"));
         Symbol[] symbols = Symbol.values();
         for (Symbol symbol : symbols) {
             imageMap.put(symbol, ImageIO.read(new File("img/symbols/" + symbol.toString() + ".png")));
+            cardMap.put(symbol, ImageIO.read(new File("img/cards/" + symbol.toString() + ".png")));
         }
         System.out.println("ImageManager setImages completed.");
     }
@@ -64,5 +69,13 @@ public class ImageManager {
 
     public Image getSymbolImage(Symbol symbol) {
         return imageMap.get(symbol);
+    }
+
+    public Image getCardImage(Symbol symbol) {
+        return cardMap.get(symbol);
+    }
+
+    public Image getRightBackgroundImage() {
+        return rightBackgroundImage;
     }
 }
