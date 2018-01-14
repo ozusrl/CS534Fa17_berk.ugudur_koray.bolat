@@ -46,7 +46,8 @@ In this project, some buttons include images and background color. SpecialButton
 
 ![Model](report/Model_UML.png)
 
-**View UML Diagram**
+**View UML Diagram** 
+
 ![Model](report/View_UML.png)
 
 **Issues**
