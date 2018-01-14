@@ -50,7 +50,7 @@ In this project, some buttons include images and background color. SpecialButton
 
 **Issues**
 
-In this section, issues which are not solved yet will be discussed.
+In this section, issues which are not solved yet will be discussed. 
 
 **Network**
 
