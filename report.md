@@ -1,10 +1,10 @@
-#Introduction
+# Introduction
 
 This project is a Java/Swing application of Cartagena which is a board game.
 
 In this report,         design decisions, UML diagrams and issues will be discussed.
 
-#Design Decisions
+# Design Decisions
 
 In this section, we will discuss some of our key design decisions.
 
