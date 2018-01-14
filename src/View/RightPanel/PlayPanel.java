@@ -110,7 +110,6 @@ public class PlayPanel extends JPanel {
     public void addCardButtons() {
         int i = 0;
         Dimension size = this.getPreferredSize();
-        System.out.println("cur:" + game.getCurrentPlayer().getIndex());
         for (Card c : game.getCurrentPlayer().getHand()) {
             Point position = positionFinder.getPositionOfCardOnPlayPanel(i);
             Image image = imageManager.getCardImage(c.getSymbol());

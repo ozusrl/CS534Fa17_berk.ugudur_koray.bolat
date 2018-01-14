@@ -44,8 +44,8 @@ public class ImageManager {
     private void setImages() throws IOException {
         downSegmentImage = ImageIO.read(new File("img/seg_02.png"));
         upSegmentImage = ImageIO.read(new File("img/seg_12.png"));
-        startSegmentImage = ImageIO.read(new File("img/seg_start2.png"));
-        endSegmentImage = ImageIO.read(new File("img/seg_start2.png"));
+        startSegmentImage = ImageIO.read(new File("img/seg_start.png"));
+        endSegmentImage = ImageIO.read(new File("img/seg_end.png"));
         rightBackgroundImage = ImageIO.read(new File("img/bg2.png"));
         Symbol[] symbols = Symbol.values();
         for (Symbol symbol : symbols) {
