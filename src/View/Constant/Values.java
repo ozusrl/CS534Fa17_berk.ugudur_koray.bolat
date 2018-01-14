@@ -30,6 +30,8 @@ public class Values {
     public static int END_EVEN_INDEX_GAP = 3;
     public static int DEFAULT_INDEX_GAP= 3;
 
+    //Play panel
+    public static int CARD_BUTTON_IMAGE_SIZE = 40;
     //Color
     public static Color TARGET_COLOR = new Color(102, 199, 0, 90);
 }

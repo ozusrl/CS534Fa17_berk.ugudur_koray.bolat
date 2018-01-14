@@ -87,13 +87,33 @@ public class PositionFinder {
         return (mainFrame.getGamePanel().getHeight() - Values.SEG_HEIGHT * 2) / 2;
     }
 
-    public Point getPositionOfCardOnCardPanel(int playerIndex,int cardIndex){
+    public Point getPositionOfCardOnCardPanel(int playerIndex, int cardIndex) {
         int column = (cardIndex % Values.MAX_CARD_ON_ROW);
         int x = Values.PADDING + column * Values.CARD_X_GAP;
         int yBase = (playerIndex * Values.RIGHT_PANEL_START_Y);
         int yJut = ((cardIndex % Values.Y_JUT) * Values.Y_JUT);
         int row = 16 + (Values.CARD_Y_BASE + (cardIndex / Values.MAX_CARD_ON_ROW * Values.CARD_Y_GAP));
         int y = yBase + yJut + row;
+        return new Point(x, y);
+    }
+
+    public Point getPositionOfPirateOnPlayPanel(int index) {
+        int width = getSizeOfPirateOnPlayPanel().width;
+        int x = Values.PADDING + (index * (width));
+        int y = Values.PADDING * 3 + Values.BUTTON_HEIGHT;
+        return new Point(x, y);
+    }
+
+    public Dimension getSizeOfPirateOnPlayPanel() {
+        int playPanelWidth = mainFrame.getRightPanel().getPlayPanel().getPreferredSize().width;
+        int width = (playPanelWidth - Values.PADDING * 2) / game.getNumOfPirates();
+        int height = 40;
+        return new Dimension(width, height);
+    }
+
+    public Point getPositionOfCardOnPlayPanel(int index) {
+        int x = Values.PADDING + (index % 7) * 45;
+        int y = 40 + Values.BUTTON_HEIGHT + Values.PADDING * 4 + (index / 7 * 45);
         return new Point(x, y);
     }
 }

@@ -25,7 +25,7 @@ public class RightPanel extends JPanel {
         this.game = game;
         this.cardPanel = new CardPanel(game, positionFinder);
         this.scoreBoardView = new ScoreBoardView(game);
-        this.playPanel = new PlayPanel(game);
+        this.playPanel = new PlayPanel(game, positionFinder);
         this.setPreferredSize(new Dimension(370, 500));
         this.setBackground(new Color(73, 204, 212));
         this.showCardsButton = new SpecialButton("img/button/showcards.png");

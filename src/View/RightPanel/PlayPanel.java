@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class PlayPanel extends JPanel {
     private Game game;
-    private int justStart;
+    private boolean justStart;
     private ArrayList<Color> colors;
     private SpecialButton play;
     private SpecialButton forward;
@@ -33,19 +33,26 @@ public class PlayPanel extends JPanel {
     private ImageManager imageManager;
     private PositionFinder positionFinder;
     private ArrayList<CardButton> cardButtons;
-    private ArrayList<JButton> pirateButtons;
-    private ArrayList arrayList;
+    private ArrayList<SpecialButton> pirateButtons;
 
-    public PlayPanel(Game game) {
+    public PlayPanel(Game game, PositionFinder positionFinder) {
         this.setPreferredSize(Values.RIGHT_PANEL_DIMENSION);
         imageManager = ImageManager.getInstance();
         this.setBackground(new Color(244, 182, 141));
         this.setLayout(null);
         this.game = game;
+        this.positionFinder = positionFinder;
         this.cardButtons = new ArrayList<>();
         this.pirateButtons = new ArrayList<>();
-        this.justStart = 1;
+        this.justStart = true;
         this.colors = new Colors().getColors();
+        createComponents();
+        setComponentsBounds();
+        addComponents();
+    }
+
+
+    private void createComponents() {
         forward = new SpecialButton("img/button/forward.png");
         backward = new SpecialButton("img/button/backward.png");
         play = new SpecialButton("img/button/play.png");
@@ -53,18 +60,22 @@ public class PlayPanel extends JPanel {
         currentCard = new JLabel("Current Card:");
         currentPlayer = new JLabel(game.getCurrentPlayer().getName(), SwingConstants.CENTER);
         currentPirate = new JLabel("Current Pirate: ");
+    }
+
+    private void setComponentsBounds() {
         Dimension size = this.getPreferredSize();
         currentCard.setBounds(16, size.height - 110, 350, 20);
-        currentCard.setForeground(new Color(0,0,0));
-        currentPlayer.setBounds(0, Values.PADDING/2, 350, 16);
+        currentCard.setForeground(new Color(0, 0, 0));
+        currentPlayer.setBounds(0, Values.PADDING / 2, 350, 16);
         currentPirate.setBounds(16, size.height - 90, 200, 20);
-        backward.setBounds(Values.PADDING, Values.PADDING*2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
-        int forwardX= (Values.PADDING*2+Values.BUTTON_WIDTH);
-        forward.setBounds(forwardX, Values.PADDING*2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
-        play.setBounds(Values.PADDING, size.height - Values.PADDING - 48, 242, Values.BUTTON_HEIGHT*3);
-        skip.setBounds(240+Values.PADDING*2, size.height - Values.PADDING -48, 60, Values.BUTTON_HEIGHT*3);
+        backward.setBounds(Values.PADDING, Values.PADDING * 2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
+        int forwardX = (Values.PADDING * 2 + Values.BUTTON_WIDTH);
+        forward.setBounds(forwardX, Values.PADDING * 2, Values.BUTTON_WIDTH, Values.BUTTON_HEIGHT);
+        play.setBounds(Values.PADDING, size.height - Values.PADDING - 48, 242, Values.BUTTON_HEIGHT * 3);
+        skip.setBounds(240 + Values.PADDING * 2, size.height - Values.PADDING - 48, 60, Values.BUTTON_HEIGHT * 3);
+    }
 
-
+    private void addComponents() {
         this.add(currentCard);
         this.add(currentPlayer);
         this.add(currentPirate);
@@ -78,7 +89,6 @@ public class PlayPanel extends JPanel {
         currentCard.setText("Current Card: " + x);
     }
 
-
     public void updateCurrentPirateLabel(Pirate pirate) {
         if (pirate == null) {
             currentPirate.setForeground(new Colors().getColors().get(0));
@@ -88,6 +98,71 @@ public class PlayPanel extends JPanel {
             currentPirate.setForeground(new Colors().getColors().get(pirate.getIndex()));
             currentPirate.setText("Current Pirate: " + pirate.getIndex());
         }
+    }
+
+    public void repaintCardButtons() {
+        removeCards(cardButtons);
+        removeCards(pirateButtons);
+        addCardButtons();
+        addPirateButtons();
+    }
+
+    public void addCardButtons() {
+        int i = 0;
+        Dimension size = this.getPreferredSize();
+        System.out.println("cur:" + game.getCurrentPlayer().getIndex());
+        for (Card c : game.getCurrentPlayer().getHand()) {
+            Point position = positionFinder.getPositionOfCardOnPlayPanel(i);
+            Image image = imageManager.getCardImage(c.getSymbol());
+            int imgSize = Values.CARD_BUTTON_IMAGE_SIZE;
+            image = image.getScaledInstance(imgSize, imgSize, Image.SCALE_DEFAULT);
+            CardButton btn = new CardButton(c, image);
+            btn.setBounds(position.x, position.y, imgSize + 2, imgSize + 2);
+            cardButtons.add(btn);
+            this.add(btn);
+            i++;
+        }
+        justStart = false;
+    }
+
+    public void addPirateButtons() {
+        for (Pirate p : game.getCurrentPlayer().getPirates()) {
+            int index = p.getIndex();
+            SpecialButton btn = new SpecialButton(colors.get(index));
+            btn.setText("" + index);
+            Point position = positionFinder.getPositionOfPirateOnPlayPanel(index);
+            Dimension size = positionFinder.getSizeOfPirateOnPlayPanel();
+            btn.setBounds(position.x, position.y, size.width, size.height);
+            pirateButtons.add(btn);
+            this.add(btn);
+        }
+    }
+
+    public void setCardButtonsEnabled(boolean enable) {
+        for (CardButton c : cardButtons)
+            c.setEnabled(enable);
+    }
+
+    public void removeCards(ArrayList<?> buttons) {
+        if (!justStart) {
+            for (int j = 0; j < buttons.size(); j++) {
+                this.remove((Component) buttons.get(j));
+                buttons.remove(j);
+                j--;
+            }
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Image img = imageManager.getRightBackgroundImage();
+        g.drawImage(img, 0, 0, 350, 600, this);
+    }
+
+    public void updatePlayerLabel(Player player) {
+        currentPlayer.setForeground(new Colors().getColors().get(player.getIndex()));
+        currentPlayer.setText(player.getName());
     }
 
     public JButton getPlay() {
@@ -115,82 +190,7 @@ public class PlayPanel extends JPanel {
         return cardButtons;
     }
 
-    public ArrayList<JButton> getPirateButtons() {
+    public ArrayList<SpecialButton> getPirateButtons() {
         return pirateButtons;
-    }
-
-    public void repaintCardButtons() {
-        removeCardButtons();
-        removePirateButtons();
-        addCardButtons();
-        addPirateButtons();
-    }
-
-    public void removeCardButtons() {
-        if (justStart == 0) {
-            for (int j = 0; j < cardButtons.size(); j++) {
-                this.remove(cardButtons.get(j));
-                cardButtons.remove(j);
-                j--;
-            }
-        }
-    }
-
-    public void addCardButtons() {
-        int i = 0;
-        Dimension size = this.getPreferredSize();
-        System.out.println("cur:" + game.getCurrentPlayer().getIndex());
-        for (Card c : game.getCurrentPlayer().getHand()) {
-            int x = Values.PADDING +(i % 7) * 45;
-            int y = 40 + Values.BUTTON_HEIGHT + Values.PADDING * 4 + (i / 7 * 45);
-            Image image = imageManager.getCardImage(c.getSymbol());
-            CardButton btn = new CardButton(c, image.getScaledInstance(40,40,Image.SCALE_DEFAULT));
-            btn.setBounds(x, y, 42, 42);
-            cardButtons.add(btn);
-            this.add(btn);
-            i++;
-        }
-        justStart = 0;
-    }
-
-    public void removePirateButtons() {
-        if (justStart == 0) {
-            for (int j = 0; j < pirateButtons.size(); j++) {
-                this.remove(pirateButtons.get(j));
-                pirateButtons.remove(j);
-                j--;
-            }
-        }
-    }
-
-    public void addPirateButtons() {
-        for (Pirate p : game.getCurrentPlayer().getPirates()) {
-            int index = p.getIndex();
-            JButton btn = new JButton("" + index);
-            btn.setBackground(colors.get(index));
-            int width = (this.getPreferredSize().width - Values.PADDING*2)/game.getNumOfPirates();
-            int x = Values.PADDING + (index * (width));
-            int y = Values.PADDING*3 + Values.BUTTON_HEIGHT;
-            btn.setBounds(x, y, width, 40);
-            pirateButtons.add(btn);
-            this.add(btn);
-        }
-    }
-
-    public void setCardButtonsEnabled(boolean enable) {
-        for (CardButton c : cardButtons)
-            c.setEnabled(enable);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Image img = imageManager.getRightBackgroundImage();
-        g.drawImage(img,0,0,350,600,this);
-    }
-
-    public void updatePlayerLabel(Player player) {
-        currentPlayer.setForeground(new Colors().getColors().get(player.getIndex()));
-        currentPlayer.setText(player.getName());
     }
 }

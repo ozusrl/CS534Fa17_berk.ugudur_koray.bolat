@@ -9,6 +9,7 @@ import java.io.File;
 public class SpecialButton extends JButton {
     String imagePath;
     Image image;
+    Color color;
 
     public SpecialButton(String imagePath) {
         this.imagePath = imagePath;
@@ -20,6 +21,10 @@ public class SpecialButton extends JButton {
         createButton();
     }
 
+    public SpecialButton(Color color){
+        this.color = color;
+        createColorButton();
+    }
     private void createButton() {
         try {
             Image img = null;
@@ -36,7 +41,12 @@ public class SpecialButton extends JButton {
         Border emptyBorder = BorderFactory.createEmptyBorder();
         this.setBorder(emptyBorder);
     }
+    private void createColorButton() {
+        this.setBackground(color);
 
+        Border emptyBorder = BorderFactory.createLineBorder(new Color(44, 16, 2));
+        this.setBorder(emptyBorder);
+    }
     public void setBackColor(int r, int b, int g) {
         this.setBackground(new Color(r, b, g));
     }

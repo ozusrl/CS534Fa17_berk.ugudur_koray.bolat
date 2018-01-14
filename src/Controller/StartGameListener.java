@@ -28,8 +28,10 @@ public class StartGameListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         startFrame.setVisible(false);
-         /* new Thread(new Server()).start();
-      */
+        /* new Thread(new Server()).start();
+
+
+*/
         String[] playerNames = new String[playerNamesFields.length];
         for(int i=0;i<playerNamesFields.length;i++){
             playerNames[i] = playerNamesFields[i].getText();
@@ -45,8 +47,6 @@ public class StartGameListener implements ActionListener {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-
-
 
 
     }

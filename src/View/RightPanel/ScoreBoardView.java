@@ -11,7 +11,7 @@ import java.awt.*;
 public class ScoreBoardView extends JPanel{
     public ScoreBoardView(Game game) {
         this.game = game;
-        this.setBackground(new Color(24,50,60));
+        this.setBackground(new Color(24,50,60,0));
         this.setPreferredSize(new Dimension(350,50));
     }
 

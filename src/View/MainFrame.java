@@ -13,13 +13,12 @@ public class MainFrame extends JFrame {
 
     private GamePanel gamePanel;
     private RightPanel rightPanel;
-    private PositionFinder positionFinder;
     private Game game;
 
     public MainFrame(Game game) throws IOException {
         this.setSize(1280, 720);
         this.game = game;
-        this.positionFinder = new PositionFinder(game,this);
+        PositionFinder positionFinder = new PositionFinder(game,this);
         gamePanel = new GamePanel(game, positionFinder);
         rightPanel = new RightPanel(game, positionFinder);
         init();
