@@ -41,7 +41,7 @@ public class SingleActionListener implements ActionListener {
         startPanel.add(label3);
         startPanel.add(segmentList);
 
-        Integer[] startingHandNumber = {6,7,8,9,10,11,12,25};
+        Integer[] startingHandNumber = {6,7,8,9,10,11,12,15};
         JLabel label4 = new JLabel("Starting Card Number");
         JComboBox startHandList = new JComboBox(startingHandNumber);
 
