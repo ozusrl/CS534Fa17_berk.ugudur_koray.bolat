@@ -181,7 +181,6 @@ public class PlayPanel extends JPanel {
         return currentCard;
     }
 
-
     public JButton getSkip() {
         return skip;
     }

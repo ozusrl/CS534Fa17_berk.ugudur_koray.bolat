@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by berku on 12.1.2018.
@@ -66,11 +65,11 @@ public class Client implements Runnable {
                     if (loopCount == 0)
                         mainFrame.getRightPanel().setRightPanel(true);
                     loopCount++;
-                    Command command = gameController.getLastCommand();
+                    Command command = gameController.getChosenCommand();
                     if (command != null) {
                         loopCount = 0;
                         writer.writeObject(command);
-                        gameController.setLastCommand(null);
+                        gameController.setChosenCommand(null);
                     }
                 } else {
                     mainFrame.getRightPanel().setRightPanel(false);

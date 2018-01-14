@@ -24,21 +24,21 @@ public class GameController {
     private BoardPanel boardPanel;
     private Card chosenCard;
     private Pirate chosenPirate;
+    private Command chosenCommand;
     private Game game;
-    private Command lastCommand;
 
     public GameController(MainFrame mainFrame, Game game) {
         this.mainFrame = mainFrame;
         this.boardPanel = mainFrame.getGamePanel().getBoardPanel();
         this.game = game;
         this.playPanel = mainFrame.getRightPanel().getPlayPanel();
-        this.lastCommand = null;
+        this.chosenCommand = null;
         init();
     }
 
     private void init() {
-        setForwardDirection();
         addDirectionListeners();
+        setForwardDirection();
         addPlayButtonListener();
         addSkipButtonListener();
         playPanel.addCardButtons();
@@ -47,7 +47,6 @@ public class GameController {
         playPanel.getSkip().setEnabled(false);
         addCardButtonsListeners();
         addPirateButtonsListeners();
-
     }
 
     private void addDirectionListeners() {
@@ -59,13 +58,32 @@ public class GameController {
         });
     }
 
+    private void setForwardDirection() {
+        playPanel.getForward().setEnabled(false);
+        playPanel.getBackward().setEnabled(true);
+        playPanel.setCardButtonsEnabled(true);
+        playPanel.getPlay().setEnabled(false);
+        setPirateButtonsOnForwardDirection();
+        setNullCardAndPirate();
+    }
+
+    private void setPirateButtonsOnForwardDirection(){
+        for (JButton btn : playPanel.getPirateButtons()) {
+            Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
+            btn.setEnabled((pirate.getCurrentCellIndex() != game.getBoard().getEndCell().getIndex()));
+        }
+    }
+
     private void setBackwardDirection() {
         playPanel.getBackward().setEnabled(false);
         playPanel.getForward().setEnabled(true);
         playPanel.setCardButtonsEnabled(false);
-        setNullCardAndPirate();
         playPanel.getPlay().setEnabled(false);
+        setPirateButtonsOnBackwardDirection();
+        setNullCardAndPirate();
+    }
 
+    private void setPirateButtonsOnBackwardDirection(){
         for (JButton btn : playPanel.getPirateButtons()) {
             Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
             boolean canMove = game.getAvailableCellIndexOnBackward(pirate) != pirate.getCurrentCellIndex();
@@ -74,36 +92,20 @@ public class GameController {
         }
     }
 
-    private void setForwardDirection() {
-        playPanel.getForward().setEnabled(false);
-        playPanel.getBackward().setEnabled(true);
-        playPanel.setCardButtonsEnabled(true);
-        setNullCardAndPirate();
-        playPanel.getPlay().setEnabled(false);
-
-        for (JButton btn : playPanel.getPirateButtons()) {
-            Pirate pirate = game.getCurrentPlayer().getPirates().get(Integer.parseInt(btn.getText()));
-            btn.setEnabled(!(pirate.getCurrentCellIndex() == game.getBoard().getEndCell().getIndex()));
-        }
-    }
-
     private void addPlayButtonListener() {
         playPanel.getPlay().addActionListener(e -> {
-            Player player = game.getCurrentPlayer();
-
             Pirate pirate = chosenPirate;
             if (!playPanel.getForward().isEnabled()) {
-                lastCommand = new MoveForward(pirate, chosenCard);
-                game.moveForward(pirate, chosenCard);
+                chosenCommand = new MoveForward(pirate, chosenCard);
             } else {
-                lastCommand = new MoveBackward(pirate);
-                game.moveBackward(pirate);
+                chosenCommand = new MoveBackward(pirate);
             }
             switchTurnRoutine();
         });
     }
 
     public void switchTurnRoutine() {
+        chosenCommand.executeOn(game);
         game.switchTurn();
         boardPanel.setTargeted(false);
         playPanel.repaintCardButtons();
@@ -111,17 +113,20 @@ public class GameController {
         addPirateButtonsListeners();
         resetChosenCard();
         setSkipButton();
-        setNullCardAndPirate();
-        playPanel.updatePlayerLabel(game.getCurrentPlayer());
         setForwardDirection();
+        playPanel.updatePlayerLabel(game.getCurrentPlayer());
+        mainFrame.repaint();
+        checkGameFinish();
+        chosenCommand = null;
+    }
+
+    private void checkGameFinish() {
         if (game.isFinished()) {
             JOptionPane.showMessageDialog(mainFrame, "GAMEOVER, WINNER: " + game.getWinner().getName());
             mainFrame.dispose();
             System.exit(0);
         }
-        mainFrame.repaint();
     }
-
 
     private void setNullCardAndPirate() {
         chosenCard = null;
@@ -173,7 +178,7 @@ public class GameController {
 
     private void addSkipButtonListener() {
         playPanel.getSkip().addActionListener(e -> {
-            lastCommand = new SkipTurn();
+            chosenCommand = new SkipTurn();
             switchTurnRoutine();
         });
     }
@@ -189,12 +194,12 @@ public class GameController {
         chosenCard = null;
     }
 
-    public Command getLastCommand() {
-        return lastCommand;
+    public Command getChosenCommand() {
+        return chosenCommand;
     }
 
-    public void setLastCommand(Command lastCommand) {
-        this.lastCommand = lastCommand;
+    public void setChosenCommand(Command chosenCommand) {
+        this.chosenCommand = chosenCommand;
     }
 
 }

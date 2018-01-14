@@ -21,13 +21,14 @@ public class SpecialButton extends JButton {
         createButton();
     }
 
-    public SpecialButton(Color color){
+    public SpecialButton(Color color) {
         this.color = color;
         createColorButton();
     }
+
     private void createButton() {
         try {
-            Image img = null;
+            Image img;
             if (image != null) {
                 img = image;
             } else {
@@ -41,12 +42,14 @@ public class SpecialButton extends JButton {
         Border emptyBorder = BorderFactory.createEmptyBorder();
         this.setBorder(emptyBorder);
     }
+
     private void createColorButton() {
         this.setBackground(color);
 
         Border emptyBorder = BorderFactory.createLineBorder(new Color(44, 16, 2));
         this.setBorder(emptyBorder);
     }
+
     public void setBackColor(int r, int b, int g) {
         this.setBackground(new Color(r, b, g));
     }
