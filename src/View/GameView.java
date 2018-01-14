@@ -12,30 +12,28 @@ import java.util.Random;
 public class GameView extends JPanel {
     private ArrayList<Color> colors;
     private BoardView boardView;
+    private PositionFinder positionFinder;
     private Game game;
-    private int numOfCells;
+    private Random rnd;
 
     public GameView(Game game) throws IOException {
         this.game = game;
-        this.numOfCells = game.getBoard().getNumOfCells();
         this.setBackground(new Color(73, 204, 212));
+        this.positionFinder = new PositionFinder(game, this);
         this.boardView = new BoardView(game, this);
         colors = new Colors().getColors();
+        this.rnd = new Random();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         paintSea(g);
-        System.out.println("gameView size: " + getSize());
         boardView.paintComponent(g);
         paintPirates(g);
-        paintPiratesOnStartCell(g);
-        paintPiratesOnEndCell(g);
     }
 
     private void paintSea(Graphics g) {
-        Random rnd = new Random();
         for (int i = 0; i <= getWidth() / 10; i++) {
             for (int j = 0; j < getHeight() / 10; j++) {
                 g.setColor(new Color(79, 213, 222));
@@ -46,49 +44,23 @@ public class GameView extends JPanel {
                 g.fillRect((i * 10) + rnd.nextInt(8), (j * 10) + rnd.nextInt(8) * j, 2, 2);
             }
         }
-
     }
 
     private void paintPirates(Graphics g) {
-        ArrayList<Cell> cells = new ArrayList<>();
-        for(Segment segment: game.getBoard().getSegments())
-            for(Cell cell: segment.getCells())
-                cells.add(cell);
-
-        for (int i = 0; i < cells.size(); i++) {
-            ArrayList<Pirate> pirates = game.getPiratesOnCell(cells.get(i).getIndex());
-            for (int j = 0; j < pirates.size(); j++) {
-                Pirate pirate = pirates.get(j);
-                Player player = game.getPlayers().get(pirate.getPlayerIndex());
-                int x = boardView.getXPositionOfCell(pirate.getCurrentCellIndex()) + 24;
-                x = x + j * 16;
-                int y = boardView.getYPositionOfCell(pirate.getCurrentCellIndex()) + 64;
-                paintPirate(g, player, pirate, x, y);
-            }
+        int startCellIndex = game.getBoard().getStartCell().getIndex();
+        int endCellIndex = game.getBoard().getEndCell().getIndex();
+        for (int i = startCellIndex; i <= endCellIndex; i++) {
+            paintPiratesOnCell(g, i);
         }
     }
 
-    private void paintPiratesOnStartCell(Graphics g) {
-        ArrayList<Pirate> pirates = game.getPiratesOnCell(-1);
-        for (int j = 0; j < pirates.size(); j++) {
-            Pirate pirate = pirates.get(j);
+    private void paintPiratesOnCell(Graphics g, int cellIndex) {
+        ArrayList<Pirate> pirates = game.getPiratesOnCell(cellIndex);
+        for (Pirate pirate : pirates) {
+            int location = pirates.indexOf(pirate);
             Player player = game.getPlayers().get(pirate.getPlayerIndex());
-            int x = boardView.getXPositionOfCell(pirate.getCurrentCellIndex()) + 24;
-            x = x + (j % 3) * 16;
-            int y = boardView.getYPositionOfCell(pirate.getCurrentCellIndex()) + 24 + (16 * (j / 3));
-            paintPirate(g, player, pirate, x, y);
-        }
-    }
-
-    private void paintPiratesOnEndCell(Graphics g) {
-        ArrayList<Pirate> pirates = game.getPiratesOnCell(game.getBoard().getEndCell().getIndex());
-        for (int j = 0; j < pirates.size(); j++) {
-            Pirate pirate = pirates.get(j);
-            Player player = game.getPlayers().get(pirate.getPlayerIndex());
-            int x = boardView.getXPositionOfCell(pirate.getCurrentCellIndex()) + 25;
-            x = x + (j % 3) * 16;
-            int y = boardView.getYPositionOfCell(pirate.getCurrentCellIndex()) + 24 + (18 * (j / 3));
-            paintPirate(g, player, pirate, x, y);
+            Point position = positionFinder.getPositionOfPirate(pirate.getCurrentCellIndex(), location);
+            paintPirate(g, player, pirate, position.x, position.y);
         }
     }
 
@@ -102,5 +74,9 @@ public class GameView extends JPanel {
 
     public BoardView getBoardView() {
         return boardView;
+    }
+
+    public PositionFinder getPositionFinder() {
+        return positionFinder;
     }
 }

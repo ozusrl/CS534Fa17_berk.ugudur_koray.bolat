@@ -1,9 +1,12 @@
 package View;
 
 import Controller.SingleActionListener;
+import Network.Client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class StartFrame extends JFrame {
 
@@ -21,6 +24,9 @@ public class StartFrame extends JFrame {
         JButton single = new JButton("Single Player");
         single.addActionListener(new SingleActionListener(startPanel,this));
         JButton multiplayer = new JButton("Multiplayer");
+        multiplayer.addActionListener(e -> {
+            new Thread(new Client()).start();
+        });
 
         startPanel.add(single);
         startPanel.add(multiplayer);

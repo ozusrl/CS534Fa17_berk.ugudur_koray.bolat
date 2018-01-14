@@ -28,7 +28,6 @@ public class MainFrame extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(gameView, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
-
     }
 
     public RightPanel getRightPanel(){
