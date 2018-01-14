@@ -33,7 +33,6 @@ public class RightPanel extends JPanel {
         createRightPanelComponents();
         this.add(cardPanel);
         this.add(playPanel);
-
         playPanel.setVisible(false);
     }
 
