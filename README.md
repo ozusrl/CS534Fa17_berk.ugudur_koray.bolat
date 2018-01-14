@@ -15,7 +15,7 @@ Screenshot of our game:
 
 ## Compile and Run
 
-Your jar files should be same folder with **img folder**.
+Your jar files should be in the same folder with **img folder**.
 
 For example:
 
