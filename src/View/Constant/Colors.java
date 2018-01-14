@@ -19,8 +19,10 @@ public class Colors {
     }
 
     public static ArrayList<Color> getColors() {
-        if(colors.size()==0)
+        if (colors == null) {
+            colors = new ArrayList<>();
             setColors();
+        }
         return colors;
     }
 }
