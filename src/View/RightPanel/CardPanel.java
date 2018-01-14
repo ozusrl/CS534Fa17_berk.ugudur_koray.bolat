@@ -67,7 +67,7 @@ public class CardPanel extends JPanel {
         for (Player player : game.getPlayers()) {
             JLabel label = playerLabels.get(player.getIndex());
             label.setText(player.getName() + " (" + player.getHand().size() + " cards)");
-            label.setForeground(new Colors().getColors().get(player.getIndex()));
+            label.setForeground(Colors.getColors().get(player.getIndex()));
         }
     }
 

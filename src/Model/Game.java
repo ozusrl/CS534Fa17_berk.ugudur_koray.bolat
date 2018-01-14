@@ -34,7 +34,6 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.turnNumber = 0;
         setupPlayers();
-        setupPirates();
         setupDeck();
     }
 
@@ -47,14 +46,6 @@ public class Game {
             players.add(new Player(i, names[i], numOfPirates));
     }
 
-    private void setupPirates() {
-        for (Player player : players) {
-            for (int j = 0; j < numOfPirates; j++) {
-                int STARTING_CELL = -1;
-                player.addPirate(new Pirate(j, player.getIndex(), STARTING_CELL));
-            }
-        }
-    }
 
     private void setupDeck() {
         Symbol[] symbols = Symbol.values();

@@ -45,7 +45,7 @@ public class PlayPanel extends JPanel {
         this.cardButtons = new ArrayList<>();
         this.pirateButtons = new ArrayList<>();
         this.justStart = true;
-        this.colors = new Colors().getColors();
+        this.colors = Colors.getColors();
         createComponents();
         setComponentsBounds();
         addComponents();
@@ -91,11 +91,11 @@ public class PlayPanel extends JPanel {
 
     public void updateCurrentPirateLabel(Pirate pirate) {
         if (pirate == null) {
-            currentPirate.setForeground(new Colors().getColors().get(0));
+            currentPirate.setForeground(colors.get(0));
             currentPirate.setText("Current Pirate: Not selected");
         } else {
 
-            currentPirate.setForeground(new Colors().getColors().get(pirate.getIndex()));
+            currentPirate.setForeground(colors.get(pirate.getIndex()));
             currentPirate.setText("Current Pirate: " + pirate.getIndex());
         }
     }

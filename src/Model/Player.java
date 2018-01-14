@@ -10,12 +10,22 @@ public class Player {
     private int index;
     private ArrayList<Pirate> pirates;
     private ArrayList<Card> hand;
+    private int numOfPirates;
 
     public Player(int index, String name, int numOfPirates) {
         this.index = index;
         this.name = name;
+        this.numOfPirates = numOfPirates;
         this.pirates = new ArrayList<>(numOfPirates);
         this.hand = new ArrayList<>();
+        setupPirates();
+    }
+
+    private void setupPirates() {
+        for (int j = 0; j < numOfPirates; j++) {
+            int STARTING_CELL = -1;
+            this.addPirate(new Pirate(j, this.getIndex(), STARTING_CELL));
+        }
     }
 
     public void addPirate(Pirate p) {
@@ -42,7 +52,7 @@ public class Player {
         return name;
     }
 
-    public void discard(Card card){
+    public void discard(Card card) {
         hand.remove(card);
     }
 

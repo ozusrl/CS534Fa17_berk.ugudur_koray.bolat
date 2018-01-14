@@ -7,14 +7,9 @@ import java.util.ArrayList;
  * Created by berku on 7.1.2018.
  */
 public class Colors {
-    private ArrayList<Color> colors;
+    private static ArrayList<Color> colors;
 
-    public Colors() {
-        this.colors = new ArrayList<>();
-        setColors();
-    }
-
-    private void setColors() {
+    private static void setColors() {
         colors.add(Color.BLACK);
         colors.add(Color.WHITE);
         colors.add(Color.RED);
@@ -23,7 +18,9 @@ public class Colors {
         colors.add(Color.YELLOW);
     }
 
-    public ArrayList<Color> getColors() {
+    public static ArrayList<Color> getColors() {
+        if(colors.size()==0)
+            setColors();
         return colors;
     }
 }

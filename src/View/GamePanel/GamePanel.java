@@ -23,7 +23,7 @@ public class GamePanel extends JPanel {
         this.positionFinder = positionFinder;
         this.setBackground(new Color(73, 204, 212));
         this.boardPanel = new BoardPanel(game, positionFinder);
-        colors = new Colors().getColors();
+        colors = Colors.getColors();
         this.rnd = new Random();
     }
 
