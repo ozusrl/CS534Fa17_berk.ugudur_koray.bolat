@@ -2,7 +2,7 @@
 
 This project is a Java/Swing application of Cartagena which is a board game.
 
-In this report,         design decisions, UML diagrams and issues will be discussed.
+In this report, design decisions, UML diagrams and issues will be discussed.
 
 # Design Decisions
 
@@ -38,7 +38,7 @@ Before our implementation starts,  we notice that MVC Architectural Design patte
 
 In this project, some buttons include images and background color. SpecialButton extends JButton and it was created for the purpose of creating these type of buttons more easier. Also CardButton class extends SpecialButton class and this class contains a Card object.
 
-#UML Diagrams
+# UML Diagrams
 
 **Model UML Diagram**
 
@@ -48,7 +48,7 @@ In this project, some buttons include images and background color. SpecialButton
 
 ![Model](report/View_UML.png)
 
-#Issues
+# Issues
 
 In this section, issues which are not solved yet will be discussed. 
 
