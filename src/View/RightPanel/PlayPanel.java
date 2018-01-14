@@ -5,6 +5,8 @@ import View.Button.CardButton;
 import View.Button.SpecialButton;
 import View.Constant.Colors;
 import View.Constant.Values;
+import View.Manager.ImageManager;
+import View.Manager.PositionFinder;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +21,6 @@ import java.util.Map;
  */
 public class PlayPanel extends JPanel {
     private Game game;
-    private Map<Symbol, Image> cardMap;
     private int justStart;
     private ArrayList<Color> colors;
     private SpecialButton play;
@@ -29,15 +30,18 @@ public class PlayPanel extends JPanel {
     private JLabel currentCard;
     private JLabel currentPlayer;
     private JLabel currentPirate;
+    private ImageManager imageManager;
+    private PositionFinder positionFinder;
     private ArrayList<CardButton> cardButtons;
     private ArrayList<JButton> pirateButtons;
+    private ArrayList arrayList;
 
-    public PlayPanel(Game game, Map<Symbol, Image> cardMap) {
+    public PlayPanel(Game game) {
         this.setPreferredSize(Values.RIGHT_PANEL_DIMENSION);
+        imageManager = ImageManager.getInstance();
         this.setBackground(new Color(244, 182, 141));
         this.setLayout(null);
         this.game = game;
-        this.cardMap = cardMap;
         this.cardButtons = new ArrayList<>();
         this.pirateButtons = new ArrayList<>();
         this.justStart = 1;
@@ -139,7 +143,8 @@ public class PlayPanel extends JPanel {
         for (Card c : game.getCurrentPlayer().getHand()) {
             int x = Values.PADDING +(i % 7) * 45;
             int y = 40 + Values.BUTTON_HEIGHT + Values.PADDING * 4 + (i / 7 * 45);
-            CardButton btn = new CardButton(c, cardMap.get(c.getSymbol()).getScaledInstance(40,40,Image.SCALE_DEFAULT));
+            Image image = imageManager.getCardImage(c.getSymbol());
+            CardButton btn = new CardButton(c, image.getScaledInstance(40,40,Image.SCALE_DEFAULT));
             btn.setBounds(x, y, 42, 42);
             cardButtons.add(btn);
             this.add(btn);
@@ -170,7 +175,6 @@ public class PlayPanel extends JPanel {
             pirateButtons.add(btn);
             this.add(btn);
         }
-
     }
 
     public void setCardButtonsEnabled(boolean enable) {
@@ -181,12 +185,7 @@ public class PlayPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image img = null;
-        try {
-            img = ImageIO.read(new File("img/bg2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Image img = imageManager.getRightBackgroundImage();
         g.drawImage(img,0,0,350,600,this);
     }
 
