@@ -9,6 +9,8 @@ Time-lapse gameplay video of our game:
 [Video Link](https://www.youtube.com/watch?v=WIWXM6XtBrU)
 
 Screenshot of our game:
+
+All of the drawings were made by us.
 ![Screenshot](report/ss2.png)
 
 ** Asaf Koray BOLAT / Berk ÜĞÜDÜR **
